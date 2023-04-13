@@ -6,6 +6,7 @@ import java.time.LocalDate;
  * Contains parameters for API call, can be changed on runtime, set initially by App-Config and User Input
  */
 public class ApiDemand {
+    
     public final static int DEFAULT_OFFSET = 0; 
 
     private String requestUrl;

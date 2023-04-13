@@ -99,9 +99,7 @@ public class InitializeApp {
         writeConfiguration(configurationMap);
         writeConfigurationToObject(configurationMap);
     }
-
-
-
+    
     public void reInitializeAccessKey() {
 
         Map<String, String> configurationMap = new HashMap<>();
@@ -169,7 +167,7 @@ public class InitializeApp {
     }
 
     protected String askUserForKey(String question) {
-        new UserOutput().consoleLog(question);
+        new UserOutput().write(question);
     	return input.getStringFromUser(); 
     }
     

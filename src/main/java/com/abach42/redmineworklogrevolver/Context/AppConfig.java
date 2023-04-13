@@ -4,6 +4,7 @@ package com.abach42.redmineworklogrevolver.Context;
  * App configuration according to configuration file .configuration/config.properties
  */
 public class AppConfig {
+    
     private boolean isInitialized = false;
 
     private String baseUri;

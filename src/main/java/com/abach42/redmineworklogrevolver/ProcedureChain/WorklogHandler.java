@@ -47,7 +47,7 @@ public class WorklogHandler extends AbstractProcedureHandler {
                 .reInitializeAccessKey();
 
         } catch (EmptyResultException e) {
-            new UserOutput().consoleLog(e.getMessage());
+            new UserOutput().write(e.getMessage());
             
         }
         

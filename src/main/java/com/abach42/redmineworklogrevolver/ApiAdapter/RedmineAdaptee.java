@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class RedmineAdaptee {
+    
     //Request Parameters
     public static final String LIST_MY_TIME_ENTRIES_OPERATION_ID = "/time_entries.json?user_id=me";
     public static final String SINGLE_ISSUE_OPERATION_ID = "/issues.json?status_id=*";

@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import org.json.JSONObject;
 
 public abstract class AbstractRedmineAdapter {
+    
     protected RedmineAdaptee adaptee;
     protected JsonInterface jsonFormatter;
     

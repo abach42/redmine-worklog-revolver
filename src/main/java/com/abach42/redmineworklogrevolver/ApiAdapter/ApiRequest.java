@@ -19,6 +19,7 @@ import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
  * Working in train wreck to make call short hand. 
  */
 public class ApiRequest implements ApiRequestInterface {
+	
 	protected String url;
 	protected String[] headers; 
 

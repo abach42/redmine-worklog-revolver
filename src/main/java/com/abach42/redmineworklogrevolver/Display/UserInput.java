@@ -6,6 +6,7 @@ import java.util.Scanner;
  * Console action input to contact user. 
  */
 public class UserInput implements ConsoleInputInterface {
+    
     protected static String WRONG_USER_INPUT_MSG = "That wasn't an expected number.";
     public static String DEFAULT_INPUT_STRING = "";
     public static int DEFAULT_INPUT_INT = 1;

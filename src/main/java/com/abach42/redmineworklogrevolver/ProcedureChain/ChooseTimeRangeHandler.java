@@ -16,27 +16,27 @@ import com.abach42.redmineworklogrevolver.TimeRangeFactory.TimeRangeInterface;
  * Contact user to show options, get option from user and fullfill.
  */
 public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
-    public static String VOCATIVE_MSG = "Enter a command: ";
-    public static String WRONG_INTPUT_MSG = "Entered key not valid.";
-    public static String USER_EXIT_MSG = "User exit.";
-    public static int USER_EXIT_CHOICE = 0;
-    public static String USER_TO_CHOSE_MSG = "(%d) for %s";
-    public static String USER_CHOSEN_MSG = "... starting redmine api for %s ...";
-    public static String USER_DEFAULT_MSG = "[%d %s]: ";
-    public static String USER_TO_EXIT_MSG = "(%d) for ending application.";
+    public static final String VOCATIVE_MSG = "Enter a command: ";
+    public static final String WRONG_INTPUT_MSG = "Entered key not valid.";
+    public static final String USER_EXIT_MSG = "User exit.";
+    public static final int USER_EXIT_CHOICE = 0;
+    public static final String USER_TO_CHOSE_MSG = "(%d) for %s";
+    public static final String USER_CHOSEN_MSG = "... starting redmine api for %s ...";
+    public static final String USER_DEFAULT_MSG = "[%d %s]: ";
+    public static final String USER_TO_EXIT_MSG = "(%d) for ending application.";
 
-    protected UserOutput out; 
+    protected UserOutput output; 
 
     public ChooseTimeRangeHandler(ContextInterface context) {
         super(context);
 
-        out = new UserOutput();
+        output = new UserOutput();
     }
     
     @Override
     public void handle() {
         ConsoleInputInterface input = new UserInput();
-        out.consoleLog(VOCATIVE_MSG);
+        output.write(VOCATIVE_MSG);
 
         printOptionsInConsole();
 
@@ -52,13 +52,13 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
             TimeRangeFactoryInterface timeRangeFactory = new TimeRangeFactory();
             TimeRangeInterface timeRange = timeRangeFactory.getTimeRange(inputKey);
 
-            out.consoleLog(String.format(USER_CHOSEN_MSG, timeRange.toString()));
+            output.write(String.format(USER_CHOSEN_MSG, timeRange.toString()));
             
             context.getApiDemand().setFrom(timeRange.getFrom());
             context.getApiDemand().setTo(timeRange.getTo());
 
         } catch (IllegalCommandKeyException e) {
-            out.consoleLog(WRONG_INTPUT_MSG);
+            output.write(WRONG_INTPUT_MSG);
             
         }
 
@@ -71,19 +71,20 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
         Arrays.stream(TimeRangeFactory.TimeRangeTypes.values())
             .forEach(
                 timeRangeType -> 
-                    out.consoleLog(
+                    output.write(
                         String.format(
                             USER_TO_CHOSE_MSG, 
                             timeRangeType.inputKey, 
                             timeRangeFactory.getTimeRange(timeRangeType.inputKey).toString()),
                         10));
         
-       out.consoleLog(String.format(USER_TO_EXIT_MSG, USER_EXIT_CHOICE));
+       output.write(String.format(USER_TO_EXIT_MSG, USER_EXIT_CHOICE));
 
-       out.consoleLogInline(String.format(
-                                USER_DEFAULT_MSG, 
-                                UserInput.DEFAULT_INPUT_INT, 
-                                timeRangeFactory.getTimeRange(UserInput.DEFAULT_INPUT_INT).toString()));
+       output.writeInLine(
+            String.format(
+                USER_DEFAULT_MSG, 
+                UserInput.DEFAULT_INPUT_INT, 
+                timeRangeFactory.getTimeRange(UserInput.DEFAULT_INPUT_INT).toString()));
     }
     
 }
