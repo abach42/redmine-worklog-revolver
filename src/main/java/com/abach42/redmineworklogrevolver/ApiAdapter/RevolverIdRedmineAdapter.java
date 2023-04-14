@@ -1,6 +1,8 @@
 package com.abach42.redmineworklogrevolver.ApiAdapter;
 
 import java.util.LinkedHashMap;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,9 +13,11 @@ import com.abach42.redmineworklogrevolver.Exception.ApiRequestException;
 import com.abach42.redmineworklogrevolver.Exception.ApplicationException;
 
 /*
- * TODO write
+ * Searches for Revolver ID, starting with issue id of the origin, if not present, sliding up to parent, 
+ * finally giving up returning "not provided..." 
  */
 public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements RevolverIdTargetInterface {
+    protected static final String NOT_PROVIDED = "not provided for #";
 
     public RevolverIdRedmineAdapter(RedmineAdaptee adaptee, JsonExtractable jsonFormatter) {
         super(adaptee, jsonFormatter);
@@ -22,39 +26,41 @@ public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements 
     @Override
     public String singleRevolverId(ApiDemand apiDemand) {
         try {
-            return slideRevolverId(apiDemand);
+            return searchForRevolverId(apiDemand);
         } catch  (ApiRequestException e) {
             throw new ApplicationException(e.getMessage());
 
         }
     }
 
-    protected String slideRevolverId(ApiDemand apiDemand) {
+    protected String searchForRevolverId(ApiDemand apiDemand) {
         JSONArray issue;
-		Integer parentIssueId; 
-        String revolverId = "";
+        OptionalInt parentIssueId;
+        Optional<String> revolverId;
         Integer originalIssueId = apiDemand.getIssueId();
 
         do {
-			LinkedHashMap<String, String> query = composeQuery(apiDemand);
-			String response = sendRequest(query, apiDemand.getApiKey());
+            LinkedHashMap<String, String> query = composeQuery(apiDemand);
+            String response = sendRequest(query, apiDemand.getApiKey());
+            
+            issue = getIssue(response);
+            revolverId = extractRevolerId(issue);
 
-			issue = getIssue(response);
-			revolverId = extractRevolerId(issue);
+            parentIssueId = extractParentIssueId(issue);
+            parentIssueId.ifPresent(
+                id -> apiDemand.setIssueId(id)
+            );
 
-			parentIssueId = getParentIssueId(issue);
-			apiDemand.setIssueId(parentIssueId);
-			
-		} while (keepSliding(revolverId, parentIssueId));
-		
-        return revolverId.isBlank() ? reportOriginalIssue(originalIssueId) : revolverId;
+        } while (keepSearching(revolverId, parentIssueId));
+
+        return revolverId.orElseGet(() -> NOT_PROVIDED + originalIssueId);
     }
 
     protected JSONArray getIssue(String response) {
         JSONArray issue;
         JSONObject json = convertResponse(response);
         issue = extractIssue(json);
-		
+
         return issue;
     }
 
@@ -71,46 +77,48 @@ public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements 
         return jsonFormatter.getJsonArray(RedmineAdaptee.SUBKEY_ISSUES, json);
     }
 
-    protected Integer getParentIssueId(JSONArray issue) {
-		try {
-			return issue.getJSONObject(0)
-                .getJSONObject(RedmineAdaptee.SUBKEY_PARENT).getInt(RedmineAdaptee.SUBKEY_ID);
-		} catch (JSONException e) {
-			return null;
-		}
-	}
-
-	protected boolean keepSliding(String revolverId, Integer parentIssueId) {
-		return revolverId.equals("") && parentIssueId != null;
-	}
-	
-    public String extractRevolerId(JSONArray issueArray) {
-		JSONArray customFields = getCustomFields(issueArray);
-		
-		for (int x = 0; x < customFields.length(); x++) {
-			JSONObject customElement = customFields.getJSONObject(x);
-			
-            
-			if(customElement.getString(RedmineAdaptee.SUBKEY_NAME)
-                    .equals(RedmineAdaptee.SUBKEY_REVOLVER_ID)) {
-				return customElement.getString(RedmineAdaptee.SUBKEY_VALUE).trim();
-				
-			}
-		}
-		return "";
-	}
+    protected OptionalInt extractParentIssueId(JSONArray issue) {
+        try {
+            return OptionalInt.of(
+                issue.getJSONObject(0)
+                    .getJSONObject(RedmineAdaptee.SUBKEY_PARENT).getInt(RedmineAdaptee.SUBKEY_ID));
+        } catch (JSONException e) {
+            return OptionalInt.empty();
+        }
+    }
     
-	public JSONArray getCustomFields(JSONArray issueArray) {
-		try {
-			return issueArray.getJSONObject(0).getJSONArray(RedmineAdaptee.SUBKEY_CUSTOM_FIELDS);
+    protected boolean keepSearching(Optional<String> revolverId, OptionalInt parentIssueId) {
+        return revolverId.isEmpty() && !parentIssueId.isEmpty();
+    }
 
-		} catch (JSONException e) {
-			return null;
+    public Optional<String> extractRevolerId(JSONArray issueArray) {
+        Optional<JSONArray> customFields = getCustomFields(issueArray);
 
-		}
-	}
+        if(customFields.isEmpty()) {
+            return Optional.empty();
+        }
 
-    private String reportOriginalIssue(Integer originalIssueId) {
-        return "not provided for #" + originalIssueId;
+        for (int x = 0; x < customFields.get().length(); x++) {
+            JSONObject customElement = customFields.get().getJSONObject(x);
+            
+            if(
+                customElement.getString(RedmineAdaptee.SUBKEY_NAME).equals(RedmineAdaptee.SUBKEY_REVOLVER_ID)
+            ) {
+                Optional<String> extractedValue = Optional.of(customElement.getString(RedmineAdaptee.SUBKEY_VALUE).trim());
+                
+                return extractedValue.filter(str -> !str.isBlank());
+            }
+        }
+        
+        return Optional.empty();
+    }
+    
+    public Optional<JSONArray> getCustomFields(JSONArray issueArray) {
+        try {
+            return Optional.ofNullable(issueArray.getJSONObject(0).getJSONArray(RedmineAdaptee.SUBKEY_CUSTOM_FIELDS))
+
+        } catch (JSONException e) {
+            return Optional.empty();
+        }
     }
 }
