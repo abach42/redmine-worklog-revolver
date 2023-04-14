@@ -115,7 +115,7 @@ public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements 
     
     public Optional<JSONArray> getCustomFields(JSONArray issueArray) {
         try {
-            return Optional.ofNullable(issueArray.getJSONObject(0).getJSONArray(RedmineAdaptee.SUBKEY_CUSTOM_FIELDS))
+            return Optional.ofNullable(issueArray.getJSONObject(0).getJSONArray(RedmineAdaptee.SUBKEY_CUSTOM_FIELDS));
 
         } catch (JSONException e) {
             return Optional.empty();
