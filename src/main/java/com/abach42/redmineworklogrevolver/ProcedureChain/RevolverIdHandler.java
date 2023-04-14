@@ -44,7 +44,7 @@ public class RevolverIdHandler extends AbstractProcedureHandler{
 
             worklog.setRevolverIdentifier(revolverId);
 
-            new UserOutput().writeProgressBar(++progress, list.size());
+            new UserOutput().drawProgessBar(++progress, list.size());
         }
 
         handleNext();

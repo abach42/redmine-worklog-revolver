@@ -54,11 +54,13 @@ public class ApiRequest implements ApiRequestable {
 
 	@Override
 	public String toString() throws EmptyResultException{
-		if(response == null) {
+		String responseString = response.body().toString();
+
+		if(responseString.isBlank()) {
 			throw new EmptyResultException("Result empty.");
 		}
 
-		return response.body().toString();
+		return responseString;
 	}
 
 	protected HttpRequest request() {

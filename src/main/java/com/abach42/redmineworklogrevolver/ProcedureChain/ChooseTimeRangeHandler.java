@@ -52,13 +52,13 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
             TimeRangeFactoryInterface timeRangeFactory = new TimeRangeFactory();
             TimeRangeable timeRange = timeRangeFactory.getTimeRange(inputKey);
 
-            output.write(String.format(USER_CHOSEN_MSG, timeRange.toString()));
+            output.writeNotice(String.format(USER_CHOSEN_MSG, timeRange.toString()));
             
             context.getApiDemand().setFrom(timeRange.getFrom());
             context.getApiDemand().setTo(timeRange.getTo());
 
         } catch (IllegalCommandKeyException e) {
-            output.write(WRONG_INTPUT_MSG);
+            output.writeException(WRONG_INTPUT_MSG);
             
         }
 

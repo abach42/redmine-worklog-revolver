@@ -12,6 +12,7 @@ import com.abach42.redmineworklogrevolver.Context.WorklogList;
 import com.abach42.redmineworklogrevolver.Entity.Worklog;
 import com.abach42.redmineworklogrevolver.Exception.ApiRequestException;
 import com.abach42.redmineworklogrevolver.Exception.ApplicationException;
+import com.abach42.redmineworklogrevolver.Exception.EmptyWorklogException;
 
 /*
  * Adaption to receive {@code WorklogList}. 
@@ -29,6 +30,10 @@ public class WorklogRedmineAdapter extends AbstractRedmineAdapter implements Wor
         JSONArray jsonArray = processResultPages(apiDemand);
         
         WorklogList worklogList = buildWorklogList(jsonArray);
+
+        if (worklogList.size() == 0) {
+            throw new EmptyWorklogException("No worklogs in chosen time range.");
+        }
         
         return worklogList;
     }
