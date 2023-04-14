@@ -15,6 +15,8 @@ import com.abach42.redmineworklogrevolver.Exception.ApplicationException;
 /*
  * Searches for Revolver ID, starting with issue id of the origin, if not present, sliding up to parent, 
  * finally giving up returning "not provided..." 
+ * 
+ * TODO test Optionals
  */
 public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements RevolverIdTargetInterface {
     protected static final String NOT_PROVIDED = "not provided for #";

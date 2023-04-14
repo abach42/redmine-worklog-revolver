@@ -25,14 +25,14 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
     public static final String USER_DEFAULT_MSG = "[%d %s]: ";
     public static final String USER_TO_EXIT_MSG = "(%d) for ending application.";
 
-    protected UserOutput output; 
+    protected UserOutput output;
 
     public ChooseTimeRangeHandler(ContextInterface context) {
         super(context);
 
         output = new UserOutput();
     }
-    
+
     @Override
     public void handle() {
         TerminalInputable input = new UserInput();
@@ -40,26 +40,26 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
 
         printOptionsInConsole();
 
-        //TODO Stop of chain by input console, risky.
+        // TODO Stop of chain by input console, risky.
         Integer inputKey = input.getIntFromUser();
 
         try {
-            if(inputKey == USER_EXIT_CHOICE) {
-                //programm flow by exception: avoid other dependencies
+            if (inputKey == USER_EXIT_CHOICE) {
+                // programm flow by exception: avoid other dependencies
                 throw new ApplicationException(USER_EXIT_MSG);
             }
-            
+
             TimeRangeFactoryInterface timeRangeFactory = new TimeRangeFactory();
             TimeRangeable timeRange = timeRangeFactory.getTimeRange(inputKey);
 
             output.writeNotice(String.format(USER_CHOSEN_MSG, timeRange.toString()));
-            
+
             context.getApiDemand().setFrom(timeRange.getFrom());
             context.getApiDemand().setTo(timeRange.getTo());
 
         } catch (IllegalCommandKeyException e) {
             output.writeException(WRONG_INTPUT_MSG);
-            
+
         }
 
         handleNext();
@@ -69,22 +69,21 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
         TimeRangeFactoryInterface timeRangeFactory = new TimeRangeFactory();
 
         Arrays.stream(TimeRangeFactory.TimeRangeTypes.values())
-            .forEach(
-                timeRangeType -> 
-                    output.write(
-                        String.format(
-                            USER_TO_CHOSE_MSG, 
-                            timeRangeType.inputKey, 
-                            timeRangeFactory.getTimeRange(timeRangeType.inputKey).toString()),
-                        10));
-        
-       output.write(String.format(USER_TO_EXIT_MSG, USER_EXIT_CHOICE));
+                .forEach(
+                        timeRangeType -> output.write(
+                                String.format(
+                                        USER_TO_CHOSE_MSG,
+                                        timeRangeType.inputKey,
+                                        timeRangeFactory.getTimeRange(timeRangeType.inputKey).toString()),
+                                10));
 
-       output.writeInLine(
-            String.format(
-                USER_DEFAULT_MSG, 
-                UserInput.DEFAULT_INPUT_INT, 
-                timeRangeFactory.getTimeRange(UserInput.DEFAULT_INPUT_INT).toString()));
+        output.write(String.format(USER_TO_EXIT_MSG, USER_EXIT_CHOICE));
+
+        output.writeInLine(
+                String.format(
+                        USER_DEFAULT_MSG,
+                        UserInput.DEFAULT_INPUT_INT,
+                        timeRangeFactory.getTimeRange(UserInput.DEFAULT_INPUT_INT).toString()));
     }
-    
+
 }

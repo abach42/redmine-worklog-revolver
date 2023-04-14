@@ -5,7 +5,7 @@ package com.abach42.redmineworklogrevolver.Exception;
  */
 public class WrongAccessKeyException extends IllegalArgumentException {
 
-	public WrongAccessKeyException(String message) {
-		super(message);
-	}
+    public WrongAccessKeyException(String message) {
+        super(message);
+    }
 }

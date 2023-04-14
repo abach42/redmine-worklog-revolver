@@ -68,4 +68,3 @@ public class RedmineAdaptee {
         return apiRequest.handleRequest().body();
     }
 }
-

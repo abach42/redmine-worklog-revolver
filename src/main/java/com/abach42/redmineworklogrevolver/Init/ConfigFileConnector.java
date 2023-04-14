@@ -113,7 +113,7 @@ public class ConfigFileConnector implements ConfigFileConnectable {
 
     private void setBuilder() {
         Parameters params = new Parameters();
-		this.builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+        this.builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
                 .configure(
                     params.fileBased().setFile(file)		
                 );

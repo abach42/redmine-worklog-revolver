@@ -5,7 +5,7 @@ package com.abach42.redmineworklogrevolver.Exception;
  */
 public class InitializeAppException extends ApplicationException {
 
-	public InitializeAppException(String message) {
-		super(message);
-	}
+    public InitializeAppException(String message) {
+        super(message);
+    }
 }

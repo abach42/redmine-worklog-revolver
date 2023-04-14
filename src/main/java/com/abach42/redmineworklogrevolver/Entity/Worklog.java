@@ -20,39 +20,39 @@ import java.time.LocalDate;
  */
 public class Worklog {
 
-	private int id;
-	private LocalDate date;
-	private double hours;
+    private int id;
+    private LocalDate date;
+    private double hours;
 
-	public static final String EMPTY_REVOLVER_ID_TEXT = "Id not provided for #";
+    public static final String EMPTY_REVOLVER_ID_TEXT = "Id not provided for #";
 
-	private String revolverIdentifier = EMPTY_REVOLVER_ID_TEXT;
+    private String revolverIdentifier = EMPTY_REVOLVER_ID_TEXT;
 
-	public Worklog(int id, LocalDate date, double hours) {
-		this.id = id;
-		this.date = date;
-		this.hours = hours;
-		// default not provided an issue id of time entry (worklog). Automatic int - String conversion used. 
-		this.revolverIdentifier += id;
-	}
+    public Worklog(int id, LocalDate date, double hours) {
+        this.id = id;
+        this.date = date;
+        this.hours = hours;
+        // default not provided an issue id of time entry (worklog). Automatic int - String conversion used. 
+        this.revolverIdentifier += id;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public LocalDate getDate() {
-		return date;
-	}
+    public LocalDate getDate() {
+        return date;
+    }
 
-	public double getHours() {
-		return hours;
-	}
+    public double getHours() {
+        return hours;
+    }
 
-	public String getRevolverIdentifier() {
-		return revolverIdentifier;
-	}
+    public String getRevolverIdentifier() {
+        return revolverIdentifier;
+    }
 
-	public void setRevolverIdentifier(String revolverIdentifier) {
-		this.revolverIdentifier = revolverIdentifier;
-	}
+    public void setRevolverIdentifier(String revolverIdentifier) {
+        this.revolverIdentifier = revolverIdentifier;
+    }
 }

@@ -5,15 +5,15 @@ import org.json.JSONObject;
 
 public class JsonFormatter implements JsonExtractable {
 
-	@Override
+    @Override
     public JSONObject convertToJson(String jsonString) {
-		return new JSONObject(jsonString);
-	}
-	
-	@Override
+        return new JSONObject(jsonString);
+    }
+    
+    @Override
     public JSONArray getJsonArray(String key, JSONObject jsonObject) {
-		return jsonObject.getJSONArray(key);
-	}
+        return jsonObject.getJSONArray(key);
+    }
 
     public JSONObject getJsonObject(String key, JSONObject jsonObject) {
         return jsonObject.getJSONObject(key);
@@ -24,10 +24,10 @@ public class JsonFormatter implements JsonExtractable {
         return jsonObject.getString(key);
     }
 
-	@Override
+    @Override
     public int getInt(String key, JSONObject jsonObject) {
-		return jsonObject.getInt(key);
-	}
+        return jsonObject.getInt(key);
+    }
 
     @Override
     public double getDouble(String key, JSONObject jsonObject) {

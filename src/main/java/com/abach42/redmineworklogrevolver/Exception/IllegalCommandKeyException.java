@@ -5,7 +5,7 @@ package com.abach42.redmineworklogrevolver.Exception;
  */
 public class IllegalCommandKeyException extends RuntimeException {
 
-	public IllegalCommandKeyException(String message) {
-		super(message);
-	}
+    public IllegalCommandKeyException(String message) {
+        super(message);
+    }
 }

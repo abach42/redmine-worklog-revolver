@@ -52,24 +52,24 @@ public class InitializeApp {
     * Every key must be set in file.
     */
     public static enum DefaultKeys {
-	DEFAULT_URI("config.default_uri", "https://frs.plan.io"),
-	DEFAULT_LIMIT("config.default_limit", "100"),
-	DEFAULT_DATE_FORMAT("config.date_format", "dd.MM.yyyy"),
+        DEFAULT_URI("config.default_uri", "https://frs.plan.io"),
+        DEFAULT_LIMIT("config.default_limit", "100"),
+        DEFAULT_DATE_FORMAT("config.date_format", "dd.MM.yyyy"),
         
         //will be set by user console input
-	API_ACCESS_KEY("config.api_access_key", "");
-
-	private String configKey;
-	private String defaultValue;
-		
-	DefaultKeys(String configKey, String defaultValue) {
-		this.configKey = configKey;
-		this.defaultValue = defaultValue;
-	}
-		
-	public String getConfigKey() {
-		return configKey;
-	}
+        API_ACCESS_KEY("config.api_access_key", "");
+        
+        private String configKey;
+        private String defaultValue;
+        
+        DefaultKeys(String configKey, String defaultValue) {
+            this.configKey = configKey;
+            this.defaultValue = defaultValue;
+        }
+        
+        public String getConfigKey() {
+            return configKey;
+        }
 
         public String getDefaultValue() {
             return defaultValue;
@@ -186,16 +186,16 @@ public class InitializeApp {
     }
 
     private boolean isStringNotSet(String string) {
-	return string == null || string.isBlank();
+        return string == null || string.isBlank();
     }
-	
+
     /*
     * Very simple to avoid evil inputs, key will be POST
     */
     private String sanitizeBrackets(String input) {
-	Pattern pattern = Pattern.compile("[\\[\\]{}()]");
-
-	Matcher matcher = pattern.matcher(input != null ? input : new String(""));
-	return matcher.replaceAll("");
+        Pattern pattern = Pattern.compile("[\\[\\]{}()]");
+        
+        Matcher matcher = pattern.matcher(input != null ? input : new String(""));
+        return matcher.replaceAll("");
     }
 }

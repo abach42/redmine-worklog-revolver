@@ -5,7 +5,7 @@ package com.abach42.redmineworklogrevolver.Exception;
  */
 public class EmptyWorklogException extends IllegalArgumentException {
 
-	public EmptyWorklogException(String message) {
-		super(message);
-	}
+    public EmptyWorklogException(String message) {
+        super(message);
+    }
 }

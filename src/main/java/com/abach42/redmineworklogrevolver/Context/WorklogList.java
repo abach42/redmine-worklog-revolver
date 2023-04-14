@@ -10,5 +10,5 @@ import com.abach42.redmineworklogrevolver.Entity.Worklog;
  * Creates {@code Worklog} objects. 
  */
 public class WorklogList extends ArrayList<Worklog> {
-	
+    
 }
