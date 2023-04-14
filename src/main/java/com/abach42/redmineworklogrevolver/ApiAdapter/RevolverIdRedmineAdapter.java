@@ -15,7 +15,7 @@ import com.abach42.redmineworklogrevolver.Exception.ApplicationException;
  */
 public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements RevolverIdTargetInterface {
 
-    public RevolverIdRedmineAdapter(RedmineAdaptee adaptee, JsonInterface jsonFormatter) {
+    public RevolverIdRedmineAdapter(RedmineAdaptee adaptee, JsonExtractable jsonFormatter) {
         super(adaptee, jsonFormatter);
     }
 

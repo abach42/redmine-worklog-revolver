@@ -23,7 +23,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.abach42.redmineworklogrevolver.Context.*;
-import com.abach42.redmineworklogrevolver.Display.ConsoleInputInterface;
+import com.abach42.redmineworklogrevolver.Display.TerminalInputable;
 import com.abach42.redmineworklogrevolver.Exception.ConfigFileConnectorException;
 import com.abach42.redmineworklogrevolver.Exception.InitializeAppException;
 import com.abach42.redmineworklogrevolver.Exception.InitializeValidationException;
@@ -34,7 +34,7 @@ public class InitializeAppTest {
     public static String DUMMY_CONSOLE_INPUT_KEY = "foo";
 
     //TODO make test mocked again
-    public class DummyConsole implements ConsoleInputInterface {
+    public class DummyConsole implements TerminalInputable {
 
         @Override
         public String getStringFromUser() {
@@ -52,7 +52,7 @@ public class InitializeAppTest {
     @DisplayName("unmocked")
     class UnMocked {
 
-        public class DummyConfigFileConnector implements ConfigFileConnectorInterface {
+        public class DummyConfigFileConnector implements ConfigFileConnectable {
 
             @Override
             public void setup(String folder, String filenName) throws ConfigFileConnectorException {
@@ -182,10 +182,10 @@ public class InitializeAppTest {
     class Mocked {
         
         @Mock 
-        public ConfigFileConnectorInterface connection;
+        public ConfigFileConnectable connection;
 
         @Mock 
-        public ConsoleInputInterface console;
+        public TerminalInputable console;
 
         public ContextInterface context;
 

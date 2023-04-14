@@ -1,6 +1,6 @@
 package com.abach42.redmineworklogrevolver.Display;
 
-public interface ConsoleInputInterface {
+public interface TerminalInputable {
 
     public String getStringFromUser();
     

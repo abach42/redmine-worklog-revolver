@@ -3,7 +3,7 @@ package com.abach42.redmineworklogrevolver.ApiAdapter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public interface JsonInterface {
+public interface JsonExtractable {
 
     public JSONObject convertToJson(String jsonString);
 

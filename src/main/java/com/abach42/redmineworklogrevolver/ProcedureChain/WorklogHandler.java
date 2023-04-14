@@ -10,6 +10,7 @@ import com.abach42.redmineworklogrevolver.Context.WorklogList;
 import com.abach42.redmineworklogrevolver.Display.UserInput;
 import com.abach42.redmineworklogrevolver.Display.UserOutput;
 import com.abach42.redmineworklogrevolver.Exception.EmptyResultException;
+import com.abach42.redmineworklogrevolver.Exception.EmptyWorklogException;
 import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
 import com.abach42.redmineworklogrevolver.Init.ConfigFileConnector;
 import com.abach42.redmineworklogrevolver.Init.InitializeApp;
@@ -46,9 +47,8 @@ public class WorklogHandler extends AbstractProcedureHandler {
                 .withContext(context)
                 .reInitializeAccessKey();
 
-        } catch (EmptyResultException e) {
-            new UserOutput().consoleLog(e.getMessage());
-            
+        } catch (EmptyResultException | EmptyWorklogException e) {
+            new UserOutput().writeException(e.getMessage());
         }
         
         handleNext();

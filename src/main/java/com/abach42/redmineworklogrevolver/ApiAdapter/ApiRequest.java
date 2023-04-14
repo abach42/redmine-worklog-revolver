@@ -18,7 +18,8 @@ import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
  * You better try-catch this to be able to handle exceptions.
  * Working in train wreck to make call short hand. 
  */
-public class ApiRequest implements ApiRequestInterface {
+public class ApiRequest implements ApiRequestable {
+
 	protected String url;
 	protected String[] headers; 
 
@@ -53,11 +54,13 @@ public class ApiRequest implements ApiRequestInterface {
 
 	@Override
 	public String toString() throws EmptyResultException{
-		if(response == null) {
+		String responseString = response.body().toString();
+
+		if(responseString.isBlank()) {
 			throw new EmptyResultException("Result empty.");
 		}
 
-		return response.body().toString();
+		return responseString;
 	}
 
 	protected HttpRequest request() {

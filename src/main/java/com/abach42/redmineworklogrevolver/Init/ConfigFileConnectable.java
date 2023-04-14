@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.abach42.redmineworklogrevolver.Exception.ConfigFileConnectorException;
 
-public interface ConfigFileConnectorInterface {
+public interface ConfigFileConnectable {
 
     void setup(String folder, String filenName) throws ConfigFileConnectorException;
 

@@ -113,7 +113,7 @@ public class UserInputTest {
         @Test
         @DisplayName("Return user input as String or fallback value")
         public void testGetStringFromUser() {
-            ConsoleInputInterface subject = new UserInput();
+            TerminalInputable subject = new UserInput();
             String userInput = subject.getStringFromUser();
             assertEquals(input, userInput);
         }

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * concrete product: first day of actual week to today
  */
-public class TimeRangeThisWeekProduct implements TimeRangeInterface {
+public class TimeRangeThisWeekProduct implements TimeRangeable {
 	protected LocalDate from;
 	protected LocalDate to;
 

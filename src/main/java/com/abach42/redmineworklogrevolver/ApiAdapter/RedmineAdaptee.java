@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class RedmineAdaptee {
+
     //Request Parameters
     public static final String LIST_MY_TIME_ENTRIES_OPERATION_ID = "/time_entries.json?user_id=me";
     public static final String SINGLE_ISSUE_OPERATION_ID = "/issues.json?status_id=*";
@@ -34,9 +35,9 @@ public class RedmineAdaptee {
     public static final String SUBKEY_CUSTOM_FIELDS = "custom_fields";
 
     
-    protected ApiRequestInterface apiRequest; 
+    protected ApiRequestable apiRequest; 
 
-    public RedmineAdaptee(ApiRequestInterface apiRequest) {
+    public RedmineAdaptee(ApiRequestable apiRequest) {
         this.apiRequest = apiRequest;
     }
 

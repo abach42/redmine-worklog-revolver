@@ -6,7 +6,7 @@ import java.time.LocalDate;
 /**
  * products of factory-method 
  */
-public interface TimeRangeInterface {
+public interface TimeRangeable {
 	
   public void setFrom();
   public LocalDate getFrom();

@@ -16,6 +16,11 @@ import com.abach42.redmineworklogrevolver.Entity.Worklog;
  */
 public class ResultHandler extends AbstractProcedureHandler{
 
+	protected static final String LABEL_REVOLVER_ID = "Revolver Identifier";
+	protected static final String LABEL_HOURS = "Hours";
+	protected static final String LABEL_DATE = "Date";
+	protected static final String LABEL_TOTAL_HOUERS = "Total hours";
+
     public ResultHandler(ContextInterface context) {
         super(context);
     }
@@ -44,43 +49,45 @@ public class ResultHandler extends AbstractProcedureHandler{
 	}
 
     private void printGroupedTableSimple(Map<LocalDate, Map<String, Double>> groupedWorklogs) {
-		UserOutput out = new UserOutput();
+		UserOutput output = new UserOutput();
 
-		out.consoleLog("");
+		output.write("\n\n");
 		
 		for (Map.Entry<LocalDate, Map<String, Double>> entry : groupedWorklogs.entrySet()) {
 			Double totalHours = 0.0;
 		    LocalDate date = entry.getKey();
 		    Map<String, Double> worklogsForDate = entry.getValue();
 		    
-			out.consoleLog("");
-			out.consoleLog("");
+			output.write("\n");
 
-		    out.consoleLog(String.format("+ %-35s + %-5s +", "-----------------------------------", "-----"),3);
+		    output.write(printTableLine(),3);
 		   
 			String dateString = date.format(DateTimeFormatter.ofPattern(context.getAppConfig().getDatePattern()));
-		    out.consoleLog(String.format("| Date: %-29s | %-5s |", dateString, ""));
-		    out.consoleLog(String.format("| %-35s | %-5s |", "Revolver Identifier", "Hours"));
+		    output.write(String.format("| %s: %-29s | %-5s |", LABEL_DATE, dateString, ""));
+		    output.write(String.format("| %-35s | %-5s |", LABEL_REVOLVER_ID, LABEL_HOURS));
 		    
-		    out.consoleLog(String.format("+ %-35s + %-5s +", "-----------------------------------", "-----"));
+		    output.write(printTableLine());
 		    
 		    for (Map.Entry<String, Double> innerEntry : worklogsForDate.entrySet()) {
 		        String revolverIdentifier = innerEntry.getKey();
 		        Double hours = innerEntry.getValue();
 		        totalHours += hours;
-		        out.consoleLog(String.format("| %-35s | %-5.2f |", revolverIdentifier, hours));
+		        output.write(String.format("| %-35s | %-5.2f |", revolverIdentifier, hours));
 		    }
 		    
-		    out.consoleLog(String.format("+ %-35s + %-5s +", "-----------------------------------", "-----"));
-		    out.consoleLog(String.format("| %-35s | %-5.2f |", "Total hours", totalHours));
-		    out.consoleLog(String.format("+ %-35s + %-5s +", "-----------------------------------", "-----"),3);
+		    output.write(printTableLine());
+		    output.write(String.format("| %-35s | %-5.2f |", LABEL_TOTAL_HOUERS, totalHours));
+		    output.write(printTableLine(),3);
 		    
-			out.wait(100);
+			output.wait(100);
 		}
 		
-		out.consoleLog("");
-		out.consoleLog("");
+		output.write("\n\n");
 
-		out.wait(1000);
+		output.wait(1000);
+	}
+
+	private String printTableLine() {
+		return String.format("+ %-35s + %-5s +", "-----------------------------------", "-----");
 	}
 }

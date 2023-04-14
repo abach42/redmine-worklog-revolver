@@ -35,8 +35,6 @@ public class RevolverIdHandler extends AbstractProcedureHandler{
                 new RedmineAdaptee(new ApiRequest()),
                 new JsonFormatter()
             );
-
-        UserOutput out = new UserOutput();
         
         WorklogList list = context.getWorklogList();
         int progress = 0;
@@ -46,7 +44,7 @@ public class RevolverIdHandler extends AbstractProcedureHandler{
 
             worklog.setRevolverIdentifier(revolverId);
 
-            out.printProgressBar(++progress, list.size());
+            new UserOutput().drawProgessBar(++progress, list.size());
         }
 
         handleNext();
