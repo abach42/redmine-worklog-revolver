@@ -44,10 +44,10 @@ public class UserOutput {
 
     public void wait(int waitMillisec) {
         try {
-			Thread.sleep(waitMillisec);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		Thread.sleep(waitMillisec);
+	} catch (InterruptedException e) {
+		e.printStackTrace();
+	}
     }
 
     protected void print(char character) {

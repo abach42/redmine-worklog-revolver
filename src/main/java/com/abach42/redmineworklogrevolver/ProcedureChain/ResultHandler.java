@@ -16,10 +16,10 @@ import com.abach42.redmineworklogrevolver.Entity.Worklog;
  */
 public class ResultHandler extends AbstractProcedureHandler{
 
-	protected static final String LABEL_REVOLVER_ID = "Revolver Identifier";
-	protected static final String LABEL_HOURS = "Hours";
-	protected static final String LABEL_DATE = "Date";
-	protected static final String LABEL_TOTAL_HOUERS = "Total hours";
+    protected static final String LABEL_REVOLVER_ID = "Revolver Identifier";
+    protected static final String LABEL_HOURS = "Hours";
+    protected static final String LABEL_DATE = "Date";
+    protected static final String LABEL_TOTAL_HOUERS = "Total hours";
 
     public ResultHandler(ContextInterface context) {
         super(context);

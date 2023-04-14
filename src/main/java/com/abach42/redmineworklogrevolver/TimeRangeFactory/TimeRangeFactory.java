@@ -15,18 +15,18 @@ public class TimeRangeFactory implements TimeRangeFactoryInterface {
 	 */
 	public enum TimeRangeTypes {
 		TODAY(1), 
-        LAST_MONTH(2),
-        THIS_MONTH(3),
-        LAST_WEEK(4), 
-        THIS_WEEK(5), 
-        YESTERDAY(6);
+		LAST_MONTH(2),
+		THIS_MONTH(3),
+		LAST_WEEK(4), 
+		THIS_WEEK(5), 
+		YESTERDAY(6);
 
 		public final Integer inputKey;
 
 		TimeRangeTypes(Integer inputKey) {
 			this.inputKey = inputKey;
 		}
-    }
+    	}
 	
 	protected static final Map<Integer, TimeRangeable> factoryTypes = new HashMap<>();
 	
@@ -43,16 +43,16 @@ public class TimeRangeFactory implements TimeRangeFactoryInterface {
 		factoryTypes.put(TimeRangeTypes.YESTERDAY.inputKey, new TimeRangeYesterdayProduct());
 	}
     
-    @Override
+    	@Override
 	public TimeRangeable getTimeRange(Integer inputKey) throws TimeRangeFactoryException {
-        if(validateInput(inputKey) == false) {
-        	throw new TimeRangeFactoryException(null);
-        }
+		if(validateInput(inputKey) == false) {
+			throw new TimeRangeFactoryException(null);
+		}
 
 		TimeRangeable product = factoryTypes.get(inputKey);
 		initializeProduct(product);
 		return product;
-    }
+	}
 
 	protected boolean validateInput(Integer numberInput) {
 		if (numberInput == null) {

@@ -37,15 +37,15 @@ public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements 
 
         do {
 			LinkedHashMap<String, String> query = composeQuery(apiDemand);
-            String response = sendRequest(query, apiDemand.getApiKey());
+			String response = sendRequest(query, apiDemand.getApiKey());
 
-            issue = getIssue(response);
-            revolverId = extractRevolerId(issue);
+			issue = getIssue(response);
+			revolverId = extractRevolerId(issue);
 
 			parentIssueId = getParentIssueId(issue);
-            apiDemand.setIssueId(parentIssueId);
+			apiDemand.setIssueId(parentIssueId);
 			
-		} while(keepSliding(revolverId, parentIssueId));
+		} while (keepSliding(revolverId, parentIssueId));
 		
         return revolverId.isBlank() ? reportOriginalIssue(originalIssueId) : revolverId;
     }
@@ -54,6 +54,7 @@ public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements 
         JSONArray issue;
         JSONObject json = convertResponse(response);
         issue = extractIssue(json);
+		
         return issue;
     }
 
@@ -93,6 +94,7 @@ public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements 
 			if(customElement.getString(RedmineAdaptee.SUBKEY_NAME)
                     .equals(RedmineAdaptee.SUBKEY_REVOLVER_ID)) {
 				return customElement.getString(RedmineAdaptee.SUBKEY_VALUE).trim();
+				
 			}
 		}
 		return "";

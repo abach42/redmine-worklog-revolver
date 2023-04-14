@@ -10,14 +10,14 @@ public class RedmineAdaptee {
     public static final String SINGLE_ISSUE_OPERATION_ID = "/issues.json?status_id=*";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String PARAM_FROM = "&from=";
-	public static final String PARAM_TO = "&to=";
+    public static final String PARAM_TO = "&to=";
     public static final String PARAM_OFFSET = "&offset=";
-	public static final String PARAM_LIMIT = "&limit=";
-	public static final String PARAM_ISSUE_ID = "&issue_id=";
+    public static final String PARAM_LIMIT = "&limit=";
+    public static final String PARAM_ISSUE_ID = "&issue_id=";
 
     protected static final String HEADER_AUTH_KEY = "X-Redmine-API-Key";
-	protected static final String HEADER_CONTENT_TYPE_KEY = "content-type";
-	protected static final String HEADER_CONTENT_TYPE_VALUE = "application/json";
+    protected static final String HEADER_CONTENT_TYPE_KEY = "content-type";
+    protected static final String HEADER_CONTENT_TYPE_VALUE = "application/json";
 
     //Response Parameters
     public static final String SUBKEY_TIME_ENTRIES = "time_entries";
@@ -68,3 +68,4 @@ public class RedmineAdaptee {
         return apiRequest.handleRequest().body();
     }
 }
+

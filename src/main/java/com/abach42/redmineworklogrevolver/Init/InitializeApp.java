@@ -28,8 +28,8 @@ public class InitializeApp {
     protected static final String CONFIG_MISSING_MSG = "Configuration is corrupt. Please delete config file.";
     protected static final String WRONG_ACCESS_KEY_MSG = "API access key missing. Please enter:";
 
-	private static final String CONFIG_FOLDER = ".configuration/";
-	private static final String CONFIG_FILE_PATH = "config.properties";
+    private static final String CONFIG_FOLDER = ".configuration/";
+    private static final String CONFIG_FILE_PATH = "config.properties";
     
     protected ContextInterface context;
     protected TerminalInputable input; 
@@ -48,33 +48,33 @@ public class InitializeApp {
     }
 
     /**
-	 * Default keys to keep it up with generated configuration file. 
-     * Every key must be set in file.
-	 */
-	public static enum DefaultKeys {
-		DEFAULT_URI("config.default_uri", "https://frs.plan.io"),
-		DEFAULT_LIMIT("config.default_limit", "100"),
-		DEFAULT_DATE_FORMAT("config.date_format", "dd.MM.yyyy"),
+    * Default keys to keep it up with generated configuration file. 
+    * Every key must be set in file.
+    */
+    public static enum DefaultKeys {
+	DEFAULT_URI("config.default_uri", "https://frs.plan.io"),
+	DEFAULT_LIMIT("config.default_limit", "100"),
+	DEFAULT_DATE_FORMAT("config.date_format", "dd.MM.yyyy"),
         
         //will be set by user console input
-		API_ACCESS_KEY("config.api_access_key", "");
+	API_ACCESS_KEY("config.api_access_key", "");
 
-		private String configKey;
-		private String defaultValue;
+	private String configKey;
+	private String defaultValue;
 		
-		DefaultKeys(String configKey, String defaultValue) {
-			this.configKey = configKey;
-            this.defaultValue = defaultValue;
-		}
+	DefaultKeys(String configKey, String defaultValue) {
+		this.configKey = configKey;
+		this.defaultValue = defaultValue;
+	}
 		
-		public String getConfigKey() {
-			return configKey;
-		}
+	public String getConfigKey() {
+		return configKey;
+	}
 
         public String getDefaultValue() {
             return defaultValue;
         }
-	}
+    }
 
     public void initialize() {
         Map<String, String> configurationMap = new HashMap<>();
@@ -186,16 +186,16 @@ public class InitializeApp {
     }
 
     private boolean isStringNotSet(String string) {
-		return string == null || string.isBlank();
-	}
+	return string == null || string.isBlank();
+    }
 	
-	/*
-	 * Very simple to avoid evil inputs, key will be POST
-	 */
-	private String sanitizeBrackets(String input) {
-		Pattern pattern = Pattern.compile("[\\[\\]{}()]");
+    /*
+    * Very simple to avoid evil inputs, key will be POST
+    */
+    private String sanitizeBrackets(String input) {
+	Pattern pattern = Pattern.compile("[\\[\\]{}()]");
 
-	    Matcher matcher = pattern.matcher(input != null ? input : new String(""));
-	    return matcher.replaceAll("");
-	}
+	Matcher matcher = pattern.matcher(input != null ? input : new String(""));
+	return matcher.replaceAll("");
+    }
 }
