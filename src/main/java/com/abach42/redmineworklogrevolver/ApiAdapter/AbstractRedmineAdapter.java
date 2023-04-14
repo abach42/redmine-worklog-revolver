@@ -4,11 +4,11 @@ import java.util.LinkedHashMap;
 import org.json.JSONObject;
 
 public abstract class AbstractRedmineAdapter {
-    
+
     protected RedmineAdaptee adaptee;
-    protected JsonInterface jsonFormatter;
+    protected JsonExtractable jsonFormatter;
     
-    public AbstractRedmineAdapter(RedmineAdaptee adaptee, JsonInterface jsonFormatter) {
+    public AbstractRedmineAdapter(RedmineAdaptee adaptee, JsonExtractable jsonFormatter) {
         this.adaptee = adaptee;
         this.jsonFormatter = jsonFormatter;
     }

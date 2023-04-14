@@ -20,7 +20,7 @@ import com.abach42.redmineworklogrevolver.Exception.ApplicationException;
  */
 public class WorklogRedmineAdapter extends AbstractRedmineAdapter implements WorklogTargetInterface {
 
-    public WorklogRedmineAdapter(RedmineAdaptee adaptee, JsonInterface jsonFormatter) {
+    public WorklogRedmineAdapter(RedmineAdaptee adaptee, JsonExtractable jsonFormatter) {
         super(adaptee, jsonFormatter);
     }
 

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 public class TimeRangeThisWeekProductTest {
     
-    public TimeRangeInterface subject = mock(TimeRangeThisWeekProduct.class, 
+    public TimeRangeable subject = mock(TimeRangeThisWeekProduct.class, 
         withSettings()
             .defaultAnswer(CALLS_REAL_METHODS));
 

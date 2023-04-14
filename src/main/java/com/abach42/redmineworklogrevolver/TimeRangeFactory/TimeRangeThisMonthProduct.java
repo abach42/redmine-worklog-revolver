@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * concrete product: first day of actual month to today
  */
-public class TimeRangeThisMonthProduct implements TimeRangeInterface {
+public class TimeRangeThisMonthProduct implements TimeRangeable {
 	protected LocalDate from;
 	protected LocalDate to;
 

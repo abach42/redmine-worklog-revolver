@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 import com.abach42.redmineworklogrevolver.Context.AppConfig;
 import com.abach42.redmineworklogrevolver.Context.ContextInterface;
-import com.abach42.redmineworklogrevolver.Display.ConsoleInputInterface;
+import com.abach42.redmineworklogrevolver.Display.TerminalInputable;
 import com.abach42.redmineworklogrevolver.Display.UserOutput;
 import com.abach42.redmineworklogrevolver.Exception.ConfigFileConnectorException;
 import com.abach42.redmineworklogrevolver.Exception.InitializeAppException;
@@ -32,10 +32,10 @@ public class InitializeApp {
 	private static final String CONFIG_FILE_PATH = "config.properties";
     
     protected ContextInterface context;
-    protected ConsoleInputInterface input; 
-    protected ConfigFileConnectorInterface connection;
+    protected TerminalInputable input; 
+    protected ConfigFileConnectable connection;
 
-    public InitializeApp(ConsoleInputInterface input, ConfigFileConnectorInterface connection) {
+    public InitializeApp(TerminalInputable input, ConfigFileConnectable connection) {
             this.input = input;
             this.connection = connection; 
     }
@@ -99,7 +99,7 @@ public class InitializeApp {
         writeConfiguration(configurationMap);
         writeConfigurationToObject(configurationMap);
     }
-    
+
     public void reInitializeAccessKey() {
 
         Map<String, String> configurationMap = new HashMap<>();

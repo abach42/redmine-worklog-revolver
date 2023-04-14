@@ -3,14 +3,14 @@ package com.abach42.redmineworklogrevolver.ProcedureChain;
 import java.util.Arrays;
 
 import com.abach42.redmineworklogrevolver.Context.ContextInterface;
-import com.abach42.redmineworklogrevolver.Display.ConsoleInputInterface;
+import com.abach42.redmineworklogrevolver.Display.TerminalInputable;
 import com.abach42.redmineworklogrevolver.Display.UserInput;
 import com.abach42.redmineworklogrevolver.Display.UserOutput;
 import com.abach42.redmineworklogrevolver.Exception.ApplicationException;
 import com.abach42.redmineworklogrevolver.Exception.IllegalCommandKeyException;
 import com.abach42.redmineworklogrevolver.TimeRangeFactory.TimeRangeFactory;
 import com.abach42.redmineworklogrevolver.TimeRangeFactory.TimeRangeFactoryInterface;
-import com.abach42.redmineworklogrevolver.TimeRangeFactory.TimeRangeInterface;
+import com.abach42.redmineworklogrevolver.TimeRangeFactory.TimeRangeable;
 
 /*
  * Contact user to show options, get option from user and fullfill.
@@ -35,7 +35,7 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
     
     @Override
     public void handle() {
-        ConsoleInputInterface input = new UserInput();
+        TerminalInputable input = new UserInput();
         output.write(VOCATIVE_MSG);
 
         printOptionsInConsole();
@@ -50,7 +50,7 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
             }
             
             TimeRangeFactoryInterface timeRangeFactory = new TimeRangeFactory();
-            TimeRangeInterface timeRange = timeRangeFactory.getTimeRange(inputKey);
+            TimeRangeable timeRange = timeRangeFactory.getTimeRange(inputKey);
 
             output.write(String.format(USER_CHOSEN_MSG, timeRange.toString()));
             

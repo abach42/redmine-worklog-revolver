@@ -4,7 +4,7 @@ import java.time.LocalDate;
 /**
  * concrete product: from yesterday to yesterday
  */
-public class TimeRangeYesterdayProduct implements TimeRangeInterface {
+public class TimeRangeYesterdayProduct implements TimeRangeable {
 	protected LocalDate from;
 	protected LocalDate to;
 

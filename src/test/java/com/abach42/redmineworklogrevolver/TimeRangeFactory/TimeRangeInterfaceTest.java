@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 public class TimeRangeInterfaceTest {
 
-    public TimeRangeInterface subject = spy(TimeRangeInterface.class);
+    public TimeRangeable subject = spy(TimeRangeable.class);
 
     /*
      *  January 1970      

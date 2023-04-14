@@ -28,7 +28,7 @@ public class TimeRangeFactory implements TimeRangeFactoryInterface {
 		}
     }
 	
-	protected static final Map<Integer, TimeRangeInterface> factoryTypes = new HashMap<>();
+	protected static final Map<Integer, TimeRangeable> factoryTypes = new HashMap<>();
 	
 	static {
 
@@ -44,12 +44,12 @@ public class TimeRangeFactory implements TimeRangeFactoryInterface {
 	}
     
     @Override
-	public TimeRangeInterface getTimeRange(Integer inputKey) throws TimeRangeFactoryException {
+	public TimeRangeable getTimeRange(Integer inputKey) throws TimeRangeFactoryException {
         if(validateInput(inputKey) == false) {
         	throw new TimeRangeFactoryException(null);
         }
 
-		TimeRangeInterface product = factoryTypes.get(inputKey);
+		TimeRangeable product = factoryTypes.get(inputKey);
 		initializeProduct(product);
 		return product;
     }
@@ -61,7 +61,7 @@ public class TimeRangeFactory implements TimeRangeFactoryInterface {
 		return factoryTypes.containsKey(numberInput);
 	}
 
-	private void initializeProduct(TimeRangeInterface product) {
+	private void initializeProduct(TimeRangeable product) {
 		product.setFrom();
 		product.setTo();
 	}

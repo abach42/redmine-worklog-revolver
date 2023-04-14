@@ -35,7 +35,7 @@ public class WorklogRedmineAdapterTest {
     private AutoCloseable closeable;
 
     @Mock
-    protected ApiRequestInterface apiRequest; 
+    protected ApiRequestable apiRequest; 
 
     @InjectMocks
     @Spy
@@ -45,7 +45,7 @@ public class WorklogRedmineAdapterTest {
     protected RedmineAdaptee adapteeInject;
     
     @Mock
-    protected JsonInterface jsonFormatter;
+    protected JsonExtractable jsonFormatter;
 
     @InjectMocks
     @Spy

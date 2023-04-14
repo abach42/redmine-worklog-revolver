@@ -18,8 +18,8 @@ import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
  * You better try-catch this to be able to handle exceptions.
  * Working in train wreck to make call short hand. 
  */
-public class ApiRequest implements ApiRequestInterface {
-	
+public class ApiRequest implements ApiRequestable {
+
 	protected String url;
 	protected String[] headers; 
 

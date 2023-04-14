@@ -34,7 +34,7 @@ public class TimeRangeFactoryTest {
     @DisplayName("Returns according to integer key") 
     @MethodSource("getFactoryMapping")
     public void testGetTimeRangeReturnsType(TimeRangeFactory.TimeRangeTypes types) {
-        TimeRangeInterface actualProduct = subject.getTimeRange(types.inputKey);
+        TimeRangeable actualProduct = subject.getTimeRange(types.inputKey);
         
         assertThat(actualProduct).isInstanceOf(TimeRangeFactory.factoryTypes.get(types.inputKey).getClass());
     }

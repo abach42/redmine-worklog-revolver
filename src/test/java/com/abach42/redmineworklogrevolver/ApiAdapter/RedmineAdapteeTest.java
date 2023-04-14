@@ -25,7 +25,7 @@ public class RedmineAdapteeTest {
     private AutoCloseable closeable;
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    ApiRequestInterface apiRequest;
+    ApiRequestable apiRequest;
 
     @InjectMocks
     RedmineAdaptee subject;

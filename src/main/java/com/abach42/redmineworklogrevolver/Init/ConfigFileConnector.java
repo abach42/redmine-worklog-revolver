@@ -20,7 +20,7 @@ import com.abach42.redmineworklogrevolver.Exception.ConfigFileConnectorException
  * First it initializes file, creates it, validates and sets up configuration builder.
  * You can read and write configuration to file specified in setup.
  */
-public class ConfigFileConnector implements ConfigFileConnectorInterface {
+public class ConfigFileConnector implements ConfigFileConnectable {
     protected File file; 
 
     protected FileBasedConfigurationBuilder<FileBasedConfiguration> builder;
