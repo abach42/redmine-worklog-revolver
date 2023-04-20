@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 
 import com.abach42.redmineworklogrevolver.Exception.ApiRequestException;
 import com.abach42.redmineworklogrevolver.Exception.EmptyResultException;
@@ -23,47 +24,56 @@ public class ApiRequest implements ApiRequestable {
     protected String url;
     protected String[] headers;
 
-    protected HttpResponse<String> response;
+    protected static final String CONNECTION_ERROR_MSG = "Connection error during call redmine API: ";
+    protected static final String API_ERROR_MSG = "Error during call redmine API: ";
+    protected static final String STATUS_CODE_ERROR_MSG = "Can not read data from API, http status code ";
+    protected static final String RESULT_EMPTY_MSG = "Request result empty.";
+    protected static final String WRONG_ACCESS_KEY_MSG = "Access key does not match, http status code ";
+
+    protected Optional<HttpResponse<String>> response;
+    protected String body;
 
     public void withParameter(String url, String... headers) {
         this.url = url;
         this.headers = headers;
     }
 
-    // fluent interface train wreck, but handy shortcut
     @Override
-    public HttpResponse<String> handleRequest() throws ApiRequestException {
-        HttpResponse<String> response;
+    public void handleRequest() throws ApiRequestException {
 
         try {
-            HttpRequest request = request();
-            response = response(request);
+            HttpRequest request = getRequest();
+            response = getResponse(request);
 
-            evaluateStatusCode(response);
-
+            setBody(response);
+            
+            evaluateStatusCode(response.get());
         } catch (ConnectException e) {
-            throw new ApiRequestException("Connection error during call redmine API: " + e.getCause().getCause());
 
+            throw new ApiRequestException(CONNECTION_ERROR_MSG + e.getCause().getCause().getMessage());
         } catch (IOException | InterruptedException e) {
-            throw new ApiRequestException("Error during call redmine API: " + e.getCause());
 
+            throw new ApiRequestException(API_ERROR_MSG + e.getCause().getMessage());
         }
-
-        return response;
     }
 
     @Override
-    public String toString() throws EmptyResultException {
-        String responseString = response.body().toString();
-
-        if (responseString.isBlank()) {
-            throw new EmptyResultException("Result empty.");
+    public String getBody() throws EmptyResultException {
+        if(body.isBlank()) {
+            throw new EmptyResultException(RESULT_EMPTY_MSG);
         }
-
-        return responseString;
+        
+        return body;
     }
 
-    protected HttpRequest request() {
+    protected void setBody(Optional<HttpResponse<String>> response) {
+        body = response.map(mpResponse -> mpResponse.body())
+            .orElseThrow(
+                () -> new EmptyResultException(RESULT_EMPTY_MSG)
+            );
+    }
+
+    protected HttpRequest getRequest() {
         return HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .headers(headers)
@@ -71,27 +81,25 @@ public class ApiRequest implements ApiRequestable {
                 .build();
     }
 
-    protected HttpResponse<String> response(HttpRequest request) throws IOException, InterruptedException {
-        return HttpClient.newBuilder()
+    protected Optional<HttpResponse<String>> getResponse(HttpRequest request) throws IOException, InterruptedException {
+        return Optional.ofNullable(HttpClient.newBuilder()
                 .build()
-                .send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+                .send(request, java.net.http.HttpResponse.BodyHandlers.ofString()));
     }
 
-    // TODO test this
-    protected void evaluateStatusCode(HttpResponse<String> response)
-            throws WrongAccessKeyException, ApiRequestException {
-        int statusCode = readStatusCode(response);
+    protected void evaluateStatusCode(HttpResponse<String> responseValue) throws WrongAccessKeyException, ApiRequestException {
+        int statusCode = readStatusCode(responseValue);
 
         if (statusCode == 401) {
-            throw new WrongAccessKeyException("Access key does not match, http status code " + statusCode);
+            throw new WrongAccessKeyException(WRONG_ACCESS_KEY_MSG+ statusCode);
         }
 
         if (statusCode != 200) {
-            throw new ApiRequestException("Can not read data from API, http status code " + statusCode);
+            throw new ApiRequestException(STATUS_CODE_ERROR_MSG+ statusCode);
         }
     }
 
-    private Integer readStatusCode(HttpResponse<String> response) {
-        return response.statusCode();
+    private Integer readStatusCode(HttpResponse<String> responseValue) {
+        return responseValue.statusCode();
     }
 }

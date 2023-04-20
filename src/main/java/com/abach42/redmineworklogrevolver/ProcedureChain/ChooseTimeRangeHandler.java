@@ -40,7 +40,7 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
 
         printOptionsInConsole();
 
-        // TODO Stop of chain by input console, risky.
+        // Stop of chain by input console, risky.
         Integer inputKey = input.getIntFromUser();
 
         try {

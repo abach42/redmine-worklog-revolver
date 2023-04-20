@@ -7,10 +7,10 @@ import java.util.Scanner;
  */
 public class UserInput implements TerminalInputable {
 
-    protected static String WRONG_USER_INPUT_MSG = "That wasn't an expected number.";
-    public static String DEFAULT_INPUT_STRING = "";
-    public static int DEFAULT_INPUT_INT = 1;
-    protected static Scanner scanner = new Scanner(System.in);
+    protected static final String WRONG_USER_INPUT_MSG = "That wasn't an expected number.";
+    public static final String DEFAULT_INPUT_STRING = "";
+    public static final int DEFAULT_INPUT_INT = 1;
+    protected static final Scanner scanner = new Scanner(System.in);
 
     @Override
     public String getStringFromUser() {

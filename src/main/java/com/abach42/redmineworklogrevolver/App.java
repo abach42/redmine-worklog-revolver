@@ -2,6 +2,7 @@ package com.abach42.redmineworklogrevolver;
 
 import com.abach42.redmineworklogrevolver.Context.Context;
 import com.abach42.redmineworklogrevolver.Context.ContextInterface;
+import com.abach42.redmineworklogrevolver.Display.UserOutput;
 import com.abach42.redmineworklogrevolver.Exception.ApplicationException;
 import com.abach42.redmineworklogrevolver.ProcedureChain.AbstractProcedureHandler;
 import com.abach42.redmineworklogrevolver.ProcedureChain.AppInitializeHandler;
@@ -26,7 +27,7 @@ public final class App {
         try {
             handler.handle();
         } catch(ApplicationException e) {
-            System.out.println("Application aborted: " + e.getMessage());
+            new UserOutput().writeException("Application aborted: " + e.getMessage());
             System.exit(0);
         }
     }
