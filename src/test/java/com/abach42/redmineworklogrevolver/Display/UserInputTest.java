@@ -60,6 +60,7 @@ public class UserInputTest {
         //TODO move subject.consoleLog(expected);
         String actual = out.toString();
 
+        //TODO \n is not cross plattform
         assertEquals(expected + "\n", actual);
     }
 

@@ -30,11 +30,17 @@ public class UserOutput {
             print(message.charAt(i));
             wait(retardMilliSec);
         } 
-        System.out.println();
+        addLineFeed();
     }
 
-    public void writeInLine(String message) {
-        print(message);
+    public void addLineFeeds(int count) {
+        for(int i = 0; i < count; i++) {
+            addLineFeed();
+        }
+    }
+
+    public void addLineFeed() {
+        System.out.println();
     }
 
     public void drawProgessBar(int progress, int max) {
@@ -50,11 +56,11 @@ public class UserOutput {
         }
     }
 
-    protected void print(char character) {
-        print(String.valueOf(character));
+    public void print(String message) {
+        System.out.print(message);
     }
 
-    protected void print(String message) {
-        System.out.print(message);
+    protected void print(char character) {
+        print(String.valueOf(character));
     }
 }

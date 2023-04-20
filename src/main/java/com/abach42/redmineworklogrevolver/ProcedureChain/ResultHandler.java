@@ -51,14 +51,14 @@ public class ResultHandler extends AbstractProcedureHandler {
     private void printGroupedTableSimple(Map<LocalDate, Map<String, Double>> groupedWorklogs) {
         UserOutput output = new UserOutput();
 
-        output.write("\n\n");
+        output.addLineFeeds(2);
 
         for (Map.Entry<LocalDate, Map<String, Double>> entry : groupedWorklogs.entrySet()) {
             Double totalHours = 0.0;
             LocalDate date = entry.getKey();
             Map<String, Double> worklogsForDate = entry.getValue();
 
-            output.write("\n");
+            output.addLineFeeds(2);
 
             output.write(printTableLine(), 3);
 
@@ -82,7 +82,7 @@ public class ResultHandler extends AbstractProcedureHandler {
             output.wait(100);
         }
 
-        output.write("\n\n");
+        output.addLineFeeds(2);
 
         output.wait(1000);
     }
