@@ -12,7 +12,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -26,6 +25,8 @@ import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+
+import org.junit.jupiter.api.Test;
 
 @ExtendWith(MockitoExtension.class)
 public class ApiRequestTest {
@@ -73,6 +74,8 @@ public class ApiRequestTest {
             realSubject.evaluateStatusCode(statusCodeAny));
         
         assertEquals(ApiRequest.STATUS_CODE_ERROR_MSG + statusCodeAny, exception.getMessage());
+
+        assertDoesNotThrow(() -> realSubject.evaluateStatusCode(200));
     }
 
     @Test
@@ -105,9 +108,9 @@ public class ApiRequestTest {
         Optional<HttpResponse<String>> response = Optional.empty();
 
         Exception exception = assertThrows(EmptyResultException.class, () -> 
-        realSubject.readStatusCode(response));
+            realSubject.setBody(response));
 
-    assertEquals(ApiRequest.RESULT_EMPTY_MSG, exception.getMessage());
+        assertEquals(ApiRequest.RESULT_EMPTY_MSG, exception.getMessage());
     }
 
     @Test
@@ -147,8 +150,6 @@ public class ApiRequestTest {
         assertThat(actualBody).isEqualTo(expectedBody);
     }
 
-    
-
     @Test
     @DisplayName("sets body")
     void testHandleRequestSetsBody() throws IOException, InterruptedException {
@@ -173,9 +174,9 @@ public class ApiRequestTest {
     void testHandleRequestThrowsOnResponseFailure() throws IOException, InterruptedException {
         doReturn(request).when(subject).getRequest();
 
-        doThrow(new IOException("IO exception message", new Exception("IO exception cause")))
-            .doThrow(new InterruptedException("Interrupted exception message"))
-                .doThrow(new ConnectException("IO exception message"))
+        doThrow(new IOException("foo", new Exception("foo")))
+            .doThrow(new InterruptedException("foo"))
+               // .doThrow(new ConnectException("foo"))
         .when(subject).getResponse(any(HttpRequest.class));
 
         Exception exception = assertThrows(ApiRequestException.class, () -> 
@@ -185,16 +186,41 @@ public class ApiRequestTest {
     }
 
     @Test
-    void testGetRequest() throws IOException {
-        // Set up the mock server and create a new instance of the class to be tested
+    @DisplayName("throws api exception on ConnectException")
+    void testHandleRequestThrowsOnConnectException() throws IOException, InterruptedException {
+        doReturn(request).when(subject).getRequest();
+
+        doThrow(new ConnectException("foo")).when(subject).getResponse(any(HttpRequest.class));
+
+        Exception exception = assertThrows(ApiRequestException.class, () -> 
+            subject.handleRequest());
+        
+        assertThat(exception.getMessage()).startsWith(ApiRequest.CONNECTION_ERROR_MSG);
+    }
+
+    @Test
+    @DisplayName("should return some content")
+    public void testGetRequest() {
+
+        String url = "https://foo.bar";
+        realSubject.withParameter(url, "Content-Type", "application/json");
+
+        HttpRequest request = realSubject.getRequest();
+
+        assertThat(request).isNotNull();
+    }
+
+    @Test
+    @DisplayName("response should be present")
+    void testGetResponse() throws IOException, InterruptedException  {
+        // Set up mock server
         MockWebServer mockServer = new MockWebServer();
  
         mockServer.start();
-
         String url = mockServer.url("/test").toString();
         String[] headers = {"Accept", "application/json", "Authorization", "Bearer abc123"};
-        ApiRequest client = new ApiRequest();
-        client.withParameter(url, headers);
+        
+        realSubject.withParameter(url, headers);
         
         // Set up a mock response from the server
         String responseBody = "{ \"message\": \"Hello, World!\" }";
@@ -203,14 +229,18 @@ public class ApiRequestTest {
                 .setHeader("Content-Type", "application/json")
                 .setBody(responseBody));
 
+        HttpRequest request = realSubject.getRequest();
+
         // Call the method being tested
-        HttpRequest request = client.getRequest();
+        Optional<HttpResponse<String>> response = realSubject.getResponse(request);
+        
+        assertThat(response).isPresent();
 
         // Verify that the request object was built correctly
         assertEquals(mockServer.url("/test").toString(), request.uri().toString());
         assertEquals("application/json", request.headers().firstValue("Accept").orElse(null));
-
         mockServer.shutdown();
         mockServer.close();
     }
+
 }

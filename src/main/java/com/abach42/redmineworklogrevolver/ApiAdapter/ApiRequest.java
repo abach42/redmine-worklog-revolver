@@ -49,7 +49,7 @@ public class ApiRequest implements ApiRequestable {
             evaluateStatusCode(readStatusCode(response));
         } catch (ConnectException e) {
 
-            throw new ApiRequestException(CONNECTION_ERROR_MSG + e.getCause().getCause().getMessage());
+            throw new ApiRequestException(CONNECTION_ERROR_MSG + e.getMessage());
         } catch (IOException | InterruptedException e) {
 
             throw new ApiRequestException(API_ERROR_MSG + e.getCause().getMessage());
