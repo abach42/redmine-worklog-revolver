@@ -40,14 +40,13 @@ public class ApiRequest implements ApiRequestable {
 
     @Override
     public void handleRequest() throws ApiRequestException {
-
         try {
             HttpRequest request = getRequest();
             response = getResponse(request);
 
             setBody(response);
             
-            evaluateStatusCode(response.get());
+            evaluateStatusCode(readStatusCode(response));
         } catch (ConnectException e) {
 
             throw new ApiRequestException(CONNECTION_ERROR_MSG + e.getCause().getCause().getMessage());
@@ -87,19 +86,20 @@ public class ApiRequest implements ApiRequestable {
                 .send(request, java.net.http.HttpResponse.BodyHandlers.ofString()));
     }
 
-    protected void evaluateStatusCode(HttpResponse<String> responseValue) throws WrongAccessKeyException, ApiRequestException {
-        int statusCode = readStatusCode(responseValue);
-
+    protected void evaluateStatusCode(int statusCode) throws WrongAccessKeyException, ApiRequestException {
         if (statusCode == 401) {
-            throw new WrongAccessKeyException(WRONG_ACCESS_KEY_MSG+ statusCode);
+            throw new WrongAccessKeyException(WRONG_ACCESS_KEY_MSG + statusCode);
         }
 
         if (statusCode != 200) {
-            throw new ApiRequestException(STATUS_CODE_ERROR_MSG+ statusCode);
+            throw new ApiRequestException(STATUS_CODE_ERROR_MSG + statusCode);
         }
     }
 
-    private Integer readStatusCode(HttpResponse<String> responseValue) {
-        return responseValue.statusCode();
+    protected Integer readStatusCode(Optional<HttpResponse<String>> response) {
+        return response.map(mpResponse -> mpResponse.statusCode())
+            .orElseThrow(
+                () -> new EmptyResultException(RESULT_EMPTY_MSG)
+            );
     }
 }

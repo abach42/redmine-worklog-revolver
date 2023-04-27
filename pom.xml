@@ -94,6 +94,13 @@
       <version>1.19.0</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://github.com/square/okhttp/tree/master/mockwebserver -->
+    <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>mockwebserver</artifactId>
+        <version>4.9.1</version>
+        <scope>test</scope>
+    </dependency>
     <!-- Mockito dependencies -->
     <dependency>
 	    <groupId>org.mockito</groupId>
