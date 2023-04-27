@@ -87,6 +87,7 @@ public class InitializeAppTest {
             Map<String, String> givenConfigurationMap = new HashMap<>();
             givenConfigurationMap.put("config.default_uri", "foo");
             givenConfigurationMap.put("config.default_limit", "foo");
+            givenConfigurationMap.put("config.date_format", "foo");
             givenConfigurationMap.put("config.api_access_key", "foo");
             givenConfigurationMap.remove(candidate.getConfigKey());
 
@@ -100,9 +101,11 @@ public class InitializeAppTest {
             Map<String, String> givenConfigurationMap = new HashMap<>();
             givenConfigurationMap.put("config.default_uri", "foo");
             givenConfigurationMap.put("config.default_limit", "foo");
+            givenConfigurationMap.put("config.date_format", "foo");
             givenConfigurationMap.put("config.api_access_key", "");
 
-            Exception exception = assertThrows(WrongAccessKeyException.class, () -> subject.validateConfiguration(givenConfigurationMap));
+            Exception exception = assertThrows(WrongAccessKeyException.class, 
+                () -> subject.validateConfiguration(givenConfigurationMap));
 
             assertEquals(InitializeApp.WRONG_ACCESS_KEY_MSG, exception.getMessage());
         }
@@ -114,6 +117,7 @@ public class InitializeAppTest {
             Map<String, String> givenConfigurationMap = new HashMap<>();
             givenConfigurationMap.put("config.default_uri", "foo");
             givenConfigurationMap.put("config.default_limit", "foo");
+            givenConfigurationMap.put("config.date_format", "foo");
             givenConfigurationMap.put("config.api_access_key", "foo");
 
             boolean actual = subject.validateConfiguration(givenConfigurationMap);

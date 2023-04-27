@@ -58,8 +58,8 @@ public class AppConfigTest {
         subject.setBaseUri(foo);
         subject.setDefaultLimitFromString("666");
         subject.setApiKey(foo);
-
-
+        subject.setDatePattern(foo);
+        
         subject.setInitialized();
 
         boolean actual = subject.isInitialized();
