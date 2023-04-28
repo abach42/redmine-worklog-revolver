@@ -4,7 +4,6 @@ import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import com.abach42.redmineworklogrevolver.ApiAdapter.ApiRequest;
 import com.abach42.redmineworklogrevolver.ApiAdapter.JsonFormatter;
 import com.abach42.redmineworklogrevolver.ApiAdapter.RedmineAdaptee;
@@ -17,7 +16,7 @@ import com.abach42.redmineworklogrevolver.Entity.Worklog;
 import com.abach42.redmineworklogrevolver.Exception.ApplicationException;
 
 /*
- * Display result
+ * Search for Revolver Ids of worklog entries, concurrently.
  */
 public class RevolverIdHandler extends AbstractProcedureHandler{
 
@@ -43,7 +42,7 @@ public class RevolverIdHandler extends AbstractProcedureHandler{
         handleNext();
     }
 
-    private void fetchRevolverIdsConcurrent(WorklogList list) {
+    protected void fetchRevolverIdsConcurrent(WorklogList list) {
         ExecutorService executor = getExecutor();
         CompletionService<Worklog> service = getService(executor);
 
@@ -62,7 +61,7 @@ public class RevolverIdHandler extends AbstractProcedureHandler{
         stopExecutor(executor);
     }
 
-    protected RevolverIdRedmineAdapter setupAdapter() {
+    protected RevolverIdTargetInterface setupAdapter() {
         return new RevolverIdRedmineAdapter(
                 new RedmineAdaptee(new ApiRequest()),
                 new JsonFormatter()
@@ -83,7 +82,7 @@ public class RevolverIdHandler extends AbstractProcedureHandler{
         worklog.setRevolverIdentifier(revolverId);
         return worklog;
     }
-
+    
     protected void waitAndCollectResult(WorklogList list, CompletionService<Worklog> service, int i) {
         try {
             service.take();
