@@ -107,7 +107,7 @@ public class WorklogRedmineAdapterTest {
     @Test
     @DisplayName("Should call jsonFormatter method")
     void testExtractTimeEntries() {
-        subject.extractTimeEntries(any());
+        subject.extractTimeEntries(any(JSONObject.class));
         verify(jsonFormatter).getJsonArray(any(), any());
     }
 
@@ -137,7 +137,7 @@ public class WorklogRedmineAdapterTest {
         doReturn("bar").when(subject).sendRequest(any(), any());
         doReturn(new JSONObject("{'foo': 'bar'}")).when(subject).convertResponse("bar");
         doReturn(new JSONArray("[{'foo': 'bar'}]")).when(subject).extractTimeEntries(any());
-        doReturn(1).when(subject).paginateDemand(apiDemand, any(JSONObject.class));
+        doReturn(1).when(subject).paginateDemand(any(ApiDemand.class), any(JSONObject.class));
 
         JSONArray actual = subject.processResultPages(apiDemand);
 

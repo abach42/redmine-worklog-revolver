@@ -22,7 +22,7 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
     public static final int USER_EXIT_CHOICE = 0;
     public static final String USER_TO_CHOSE_MSG = "(%d) for %s";
     public static final String USER_CHOSEN_MSG = "... starting redmine api for %s ...";
-    public static final String USER_DEFAULT_MSG = "[%d %s]: ";
+    public static final String USER_DEFAULT_MSG = "[%d]: ";
     public static final String USER_TO_EXIT_MSG = "(%d) for ending application.";
 
     protected UserOutput output;
@@ -40,7 +40,7 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
 
         printOptionsInConsole();
 
-        // TODO Stop of chain by input console, risky.
+        // Stop of chain by input console, risky.
         Integer inputKey = input.getIntFromUser();
 
         try {
@@ -69,21 +69,17 @@ public class ChooseTimeRangeHandler extends AbstractProcedureHandler {
         TimeRangeFactoryInterface timeRangeFactory = new TimeRangeFactory();
 
         Arrays.stream(TimeRangeFactory.TimeRangeTypes.values())
-                .forEach(
-                        timeRangeType -> output.write(
-                                String.format(
-                                        USER_TO_CHOSE_MSG,
-                                        timeRangeType.inputKey,
-                                        timeRangeFactory.getTimeRange(timeRangeType.inputKey).toString()),
-                                10));
+            .forEach(
+                timeRangeType -> output.write(
+                    String.format(
+                            USER_TO_CHOSE_MSG,
+                            timeRangeType.inputKey,
+                            timeRangeFactory.getTimeRange(timeRangeType.inputKey).toString()),
+                    10));
 
         output.write(String.format(USER_TO_EXIT_MSG, USER_EXIT_CHOICE));
 
-        output.writeInLine(
-                String.format(
-                        USER_DEFAULT_MSG,
-                        UserInput.DEFAULT_INPUT_INT,
-                        timeRangeFactory.getTimeRange(UserInput.DEFAULT_INPUT_INT).toString()));
+        output.print(String.format(USER_DEFAULT_MSG, UserInput.DEFAULT_INPUT_INT));
     }
 
 }

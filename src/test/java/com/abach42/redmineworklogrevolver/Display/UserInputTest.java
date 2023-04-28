@@ -51,17 +51,6 @@ public class UserInputTest {
     public static void tearDown() {
         System.out.close();
     }
-    
-    @Test
-    @Disabled
-    @DisplayName("Should print message")
-    public void testConsoleLog() {
-        String expected = "foo";
-        //TODO move subject.consoleLog(expected);
-        String actual = out.toString();
-
-        assertEquals(expected + "\n", actual);
-    }
 
     @Test
     @DisplayName("Input string returns string or fallback if blank")

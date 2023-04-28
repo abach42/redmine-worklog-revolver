@@ -65,6 +65,7 @@ public class RedmineAdaptee {
     }
 
     protected String getResponseBody() {
-        return apiRequest.handleRequest().body();
+        apiRequest.handleRequest();
+        return apiRequest.getBody();
     }
 }

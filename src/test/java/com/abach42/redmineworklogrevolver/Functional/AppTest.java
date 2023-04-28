@@ -41,6 +41,7 @@ public class AppTest {
     @Test
     public void out() {
         //TODO add fixtures
+        //TODO \n is not cross plattform
         String expectedOutput = ChooseTimeRangeHandler.VOCATIVE_MSG + "\n"; 
         App.main();
 

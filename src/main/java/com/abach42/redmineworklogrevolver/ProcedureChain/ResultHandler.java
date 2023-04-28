@@ -51,16 +51,16 @@ public class ResultHandler extends AbstractProcedureHandler {
     private void printGroupedTableSimple(Map<LocalDate, Map<String, Double>> groupedWorklogs) {
         UserOutput output = new UserOutput();
 
-        output.write("\n\n");
+        output.addLineFeeds(2);
 
         for (Map.Entry<LocalDate, Map<String, Double>> entry : groupedWorklogs.entrySet()) {
             Double totalHours = 0.0;
             LocalDate date = entry.getKey();
             Map<String, Double> worklogsForDate = entry.getValue();
 
-            output.write("\n");
+            output.addLineFeeds(2);
 
-            output.write(printTableLine(), 3);
+            output.write(printTableLine());
 
             String dateString = date.format(DateTimeFormatter.ofPattern(context.getAppConfig().getDatePattern()));
             output.write(String.format("| %s: %-29s | %-5s |", LABEL_DATE, dateString, ""));
@@ -69,7 +69,7 @@ public class ResultHandler extends AbstractProcedureHandler {
             output.write(printTableLine());
 
             for (Map.Entry<String, Double> innerEntry : worklogsForDate.entrySet()) {
-                String revolverIdentifier = innerEntry.getKey();
+                String revolverIdentifier = innerEntry.getKey().substring(0, Math.min(innerEntry.getKey().length(), 35));
                 Double hours = innerEntry.getValue();
                 totalHours += hours;
                 output.write(String.format("| %-35s | %-5.2f |", revolverIdentifier, hours));
@@ -77,12 +77,12 @@ public class ResultHandler extends AbstractProcedureHandler {
 
             output.write(printTableLine());
             output.write(String.format("| %-35s | %-5.2f |", LABEL_TOTAL_HOUERS, totalHours));
-            output.write(printTableLine(), 3);
+            output.write(printTableLine());
 
-            output.wait(100);
+            output.wait(20);
         }
 
-        output.write("\n\n");
+        output.addLineFeeds(2);
 
         output.wait(1000);
     }
