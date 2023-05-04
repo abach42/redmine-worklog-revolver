@@ -19,25 +19,29 @@ public class AppConfigTest {
 
     private static Stream<TestCase> oneMemberFails() {
         return Stream.of(
-            new TestCase(null, "1", "succeeds"),
-            new TestCase("succeeds", null, "succeeds"),
-            new TestCase("succeeds", "fails", "succeeds"),
-            new TestCase("succeeds", "1", null),
+            new TestCase(null, "1", "succeeds", "succeeds"),
+            new TestCase("succeeds", null, "succeeds", "succeeds"),
+            new TestCase("succeeds", "fails", "succeeds", "succeeds"),
+            new TestCase("succeeds", "1", null, "succeeds"),
+            new TestCase("succeeds", "1", "succeeds", null),
             
-            new TestCase("", "1", "succeeds"),
-            new TestCase("succeeds", "", "succeeds"),
-            new TestCase("succeeds", "1", "")
+            new TestCase("", "1", "succeeds", "succeeds"),
+            new TestCase("succeeds", "", "succeeds", "succeeds"),
+            new TestCase("succeeds", "1", "", "succeeds"),
+            new TestCase("succeeds", "1", "succeeds", "")
         );
     }
 
     private static class TestCase {
         private final String baseUri;
         private final String defaultLimit;
+        private final String datePattern;
         private final String apiKey;
 
-        public TestCase(String baseUri, String defaultLimit, String apiKey) {
+        public TestCase(String baseUri, String defaultLimit, String datePattern, String apiKey) {
             this.baseUri = baseUri;
             this.defaultLimit = defaultLimit;
+            this.datePattern = datePattern;
             this.apiKey = apiKey;
         }
     }
@@ -47,6 +51,7 @@ public class AppConfigTest {
     public void testSetInitializedIsFalse(TestCase testCase) {
         subject.setBaseUri(testCase.baseUri);
         subject.setDefaultLimitFromString(testCase.defaultLimit);
+        subject.setDatePattern(testCase.datePattern);
         subject.setApiKey(testCase.apiKey);
 
         subject.setInitialized();
