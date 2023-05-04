@@ -6,8 +6,12 @@ import static org.assertj.core.api.Assertions.*;
 
 import static org.mockito.Mockito.spy;
 import org.junit.jupiter.api.DisplayName;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.Test;
 
+@ExtendWith(MockitoExtension.class)
 public class TimeRangeInterfaceTest {
 
     public TimeRangeable subject = spy(TimeRangeable.class);

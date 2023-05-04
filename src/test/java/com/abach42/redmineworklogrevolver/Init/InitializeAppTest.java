@@ -29,11 +29,11 @@ import com.abach42.redmineworklogrevolver.Exception.InitializeAppException;
 import com.abach42.redmineworklogrevolver.Exception.InitializeValidationException;
 import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
 
+@ExtendWith(MockitoExtension.class)
 public class InitializeAppTest {
 
     public static String DUMMY_CONSOLE_INPUT_KEY = "foo";
 
-    //TODO make test mocked again
     public class DummyConsole implements TerminalInputable {
 
         @Override
@@ -61,7 +61,7 @@ public class InitializeAppTest {
 
             @Override
             public Map<String, String> readConfiguration() {
-            return new HashMap<>();
+                return new HashMap<>();
             }
 
             @Override
@@ -71,7 +71,17 @@ public class InitializeAppTest {
             
         }
 
+        @Spy
         public InitializeApp subject = new InitializeApp(new DummyConsole(), new DummyConfigFileConnector());
+
+        protected Map<String, String> givenConfigurationMap = new HashMap<>(); 
+
+        private void configurationMap(){
+            givenConfigurationMap.put("config.default_uri", "foo");
+            givenConfigurationMap.put("config.default_limit", "foo");
+            givenConfigurationMap.put("config.date_format", "foo");
+            givenConfigurationMap.put("config.api_access_key", "foo");
+        }
 
         private static Stream<Arguments> defaultConfigurationKeysDataProvider() {
             return Stream.of(InitializeApp.DefaultKeys.values())
@@ -79,29 +89,22 @@ public class InitializeAppTest {
                 .map(Arguments::of);
         }
 
-        //TODO repitition
         @ParameterizedTest
         @DisplayName("When values not exist: throws any Exception")
         @MethodSource("defaultConfigurationKeysDataProvider")
         public void testValidateConfigurationThrowsException(InitializeApp.DefaultKeys candidate) {
-            Map<String, String> givenConfigurationMap = new HashMap<>();
-            givenConfigurationMap.put("config.default_uri", "foo");
-            givenConfigurationMap.put("config.default_limit", "foo");
-            givenConfigurationMap.put("config.date_format", "foo");
-            givenConfigurationMap.put("config.api_access_key", "foo");
+
+            configurationMap();
             givenConfigurationMap.remove(candidate.getConfigKey());
 
             assertThrows(Exception.class, () -> subject.validateConfiguration(givenConfigurationMap));
         }
-        
-        //TODO repitition
+
         @Test
         @DisplayName("When access key not set: throws certain Exception")
         public void testValidateConfigurationNoAccessKeyThrowsException() {
-            Map<String, String> givenConfigurationMap = new HashMap<>();
-            givenConfigurationMap.put("config.default_uri", "foo");
-            givenConfigurationMap.put("config.default_limit", "foo");
-            givenConfigurationMap.put("config.date_format", "foo");
+
+            configurationMap();
             givenConfigurationMap.put("config.api_access_key", "");
 
             Exception exception = assertThrows(WrongAccessKeyException.class, 
@@ -110,15 +113,11 @@ public class InitializeAppTest {
             assertEquals(InitializeApp.WRONG_ACCESS_KEY_MSG, exception.getMessage());
         }
 
-        //TODO repitition
         @Test
         @DisplayName("Should return true, when all is well.")
         public void testValidateConfigurationAllIsWell() {
-            Map<String, String> givenConfigurationMap = new HashMap<>();
-            givenConfigurationMap.put("config.default_uri", "foo");
-            givenConfigurationMap.put("config.default_limit", "foo");
-            givenConfigurationMap.put("config.date_format", "foo");
-            givenConfigurationMap.put("config.api_access_key", "foo");
+
+            configurationMap();
 
             boolean actual = subject.validateConfiguration(givenConfigurationMap);
 
@@ -128,6 +127,7 @@ public class InitializeAppTest {
         @Test
         @DisplayName("Should return string of input.")
         public void testAskUserForKey() {
+
             String expected = DUMMY_CONSOLE_INPUT_KEY;
             String actual = subject.askUserForKey("any");
 
@@ -137,6 +137,7 @@ public class InitializeAppTest {
         @Test
         @DisplayName("Should add string to configuration, sanitized")
         public void testPutAccessKeyToConfiguration() {
+
             String expected = "foo";
             Map<String, String> actualConfigurationMap = new HashMap<>();
             subject.putAccesKeyToConfiguration(actualConfigurationMap, expected + "{}()[]");
@@ -147,17 +148,21 @@ public class InitializeAppTest {
         @ParameterizedTest
         @DisplayName("Should be complete")
         @MethodSource("defaultConfigurationKeysDataProvider")
-        public void getDefaultValuesBeComplete(InitializeApp.DefaultKeys candidate) {
+        public void testGetDefaultValuesBeComplete(InitializeApp.DefaultKeys candidate) {
+
+            doReturn(InitializeApp.WRONG_ACCESS_KEY_MSG).when(subject).askUserForKey(anyString());
+
             Map<String, String> actualConfigurationMap = subject.getDefaultValues();
 
             assertThat(actualConfigurationMap).containsKey(candidate.getConfigKey());
         }
 
-        
         @ParameterizedTest
         @DisplayName("Should be all set")
         @MethodSource("defaultConfigurationKeysDataProvider")
-        public void getDefaultValuesBeAllSet(InitializeApp.DefaultKeys candidate) {
+        public void testGetDefaultValuesBeAllSet(InitializeApp.DefaultKeys candidate) {
+
+            doReturn(InitializeApp.WRONG_ACCESS_KEY_MSG).when(subject).askUserForKey(anyString());
             Map<String, String> actualConfigurationMap = subject.getDefaultValues();
 
             assertThat(actualConfigurationMap.get(candidate.getConfigKey())).isNotBlank();
@@ -165,11 +170,14 @@ public class InitializeAppTest {
 
         @Test
         @DisplayName("Should be all set")
-        public void writeConfigurationToObject() {
+        public void testWriteConfigurationToObject() {
+
             ContextInterface context = new Context();
             AppConfig appConfig = new AppConfig();
             context.setAppConfig(appConfig);
             subject.withContext(context);
+
+            doReturn(InitializeApp.WRONG_ACCESS_KEY_MSG).when(subject).askUserForKey(anyString());
 
             Map<String, String> actualConfigurationMap = subject.getDefaultValues();
             subject.writeConfigurationToObject(actualConfigurationMap);
@@ -197,18 +205,31 @@ public class InitializeAppTest {
         @Spy
         public InitializeApp subject = Mockito.mock(
             InitializeApp.class, Mockito.CALLS_REAL_METHODS);
-
+        
         @Test
         @DisplayName("Connection fails, throws exception")
-        public void initializeConnectionThrows() {
+        public void testInitializeConnectionThrows() {
 
             doThrow(new ConfigFileConnectorException("foo")).when(connection).setup(anyString(), anyString());
             assertThrows(InitializeAppException.class, () -> subject.initialize());
         }
 
         @Test
+        @DisplayName("Runs without exception")
+        public void testInitializeConnection() {
+            
+            doNothing().when(subject).writeConfiguration(anyMap());
+            doNothing().when(subject).writeConfigurationToObject(anyMap());
+            doReturn(true).when(subject).validateConfiguration(anyMap());
+
+            assertDoesNotThrow(
+                () -> subject.initialize()
+            );
+        }
+
+        @Test
         @DisplayName("Initialization fails, default Values are renderd")
-        public void initializeFails() {
+        public void testInitializeFails() {
 
             Map<String, String> configurationMap = new HashMap<>();
             doThrow(new InitializeValidationException("foo")).when(subject).validateConfiguration(configurationMap);
@@ -222,15 +243,38 @@ public class InitializeAppTest {
 
         @Test
         @DisplayName("No api access key, ask for and put it to config")
-        public void initializeNoKey() {
+        public void testInitializeNoKey() {
             doThrow(new WrongAccessKeyException("message")).when(subject).validateConfiguration(anyMap());
             doReturn("fookey").when(subject).askUserForKey("message");
-
+            
             ContextInterface context = new Context();
             subject.withContext(context);
 
             subject.initialize();
             verify(subject).putAccesKeyToConfiguration(anyMap(), contains("fookey"));
+        }
+
+        @Test
+        @DisplayName("Throws error if connection not read")
+        public void testReInitializeAccesKeyThrows() {
+            doThrow(new ConfigFileConnectorException("message")).when(subject).readConfiguration();
+
+            assertThrows(InitializeAppException.class, () -> subject.reInitializeAccessKey());
+        }
+
+        @Test
+        @DisplayName("runs without error")
+        public void testReInitializeAccessKey() {
+            doReturn(new HashMap<>()).when(subject).readConfiguration();
+            doNothing().when(subject).putAccesKeyToConfiguration(new HashMap<>(), "");
+            doNothing().when(subject).writeConfiguration(new HashMap<>());
+            doNothing().when(subject).initialize();
+
+            subject.reInitializeAccessKey();
+
+            verify(subject).putAccesKeyToConfiguration(new HashMap<>(), "");
+            verify(subject).writeConfiguration(new HashMap<>());
+            verify(subject).initialize();
         }
     }
 }

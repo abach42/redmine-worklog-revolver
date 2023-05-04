@@ -120,7 +120,7 @@ public class InitializeApp {
         initialize();
     }
 
-    private Map<String, String> readConfiguration() {
+    protected Map<String, String> readConfiguration() {
         Map<String, String> configurationMap;
 
         connection.setup(CONFIG_FOLDER, CONFIG_FILE_PATH);
@@ -129,7 +129,7 @@ public class InitializeApp {
         return configurationMap;
     }    
     
-    private void writeConfiguration(Map<String, String> configurationMap) {
+    protected void writeConfiguration(Map<String, String> configurationMap) {
         connection.writeConfiguration(configurationMap);
     }
 

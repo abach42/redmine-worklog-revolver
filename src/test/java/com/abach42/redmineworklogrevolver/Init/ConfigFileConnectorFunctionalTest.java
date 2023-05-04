@@ -16,13 +16,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.abach42.redmineworklogrevolver.Exception.ConfigFileConnectorException;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /*
  * This Test does not classically follow unit rules, but include partly functional aspects 
  * to be able to run over file behavior.
  */
+@ExtendWith(MockitoExtension.class)
 public class ConfigFileConnectorFunctionalTest {
     public ConfigFileConnector subject = new ConfigFileConnector();
     public ConfigFileConnector subjectFalse = new ConfigFileConnector();

@@ -13,7 +13,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.abach42.redmineworklogrevolver.ApiAdapter.RevolverIdTargetInterface;
-import com.abach42.redmineworklogrevolver.Context.ApiDemand;
 import com.abach42.redmineworklogrevolver.Context.ContextInterface;
 import com.abach42.redmineworklogrevolver.Context.WorklogList;
 import com.abach42.redmineworklogrevolver.Entity.Worklog;
@@ -30,7 +29,6 @@ public class RevolverIdHandlerTest {
 
     @Test
     protected void testFetchRevolverIdsConcurrent() throws InterruptedException {
-        // Create a test WorklogList
         WorklogList testList = new WorklogList();
         Worklog worklog1 = new Worklog(1, LocalDate.ofEpochDay(1), 1.0);
         Worklog worklog2 = new Worklog(2, LocalDate.ofEpochDay(1), 1.0);
@@ -38,21 +36,21 @@ public class RevolverIdHandlerTest {
         testList.add(worklog1);
         testList.add(worklog2);
         testList.add(worklog3);
-
-    //TODO: think about mocking
-        // Create a mock RevolverIdTargetInterface
-        RevolverIdTargetInterface mockTarget = mock(RevolverIdTargetInterface.class);
-        doReturn(mockTarget).when(subject).setupAdapter();
-        when(mockTarget.singleRevolverId(any(ApiDemand.class))).thenReturn("revolver1");
+    
+        doAnswer(invocation -> {
+            Worklog worklog = invocation.getArgument(0);
+            worklog.setRevolverIdentifier("foobar");
+            return worklog;
+        })
+        .when(subject).addRevolverIdToWorlog(any(Worklog.class), any(RevolverIdTargetInterface.class));
         
-
         // Call the fetchRevolverIdsConcurrent method
         subject.fetchRevolverIdsConcurrent(testList);
 
         // Verify that the revolver IDs were added to each Worklog object
-        assertEquals("revolver1", worklog1.getRevolverIdentifier());
-        assertEquals("revolver1", worklog2.getRevolverIdentifier());
-        assertEquals("revolver1", worklog3.getRevolverIdentifier());
+        assertEquals("foobar", worklog1.getRevolverIdentifier());
+        assertEquals("foobar", worklog2.getRevolverIdentifier());
+        assertEquals("foobar", worklog3.getRevolverIdentifier());
 
         // Verify that the executor was stopped after all tasks completed
        // assertTrue(executor.isTerminated());
