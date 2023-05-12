@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -24,6 +23,11 @@ import org.junit.jupiter.api.Nested;
 
 import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.*;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.Test;
+
+@ExtendWith(MockitoExtension.class)
 //TODO clear up
 public class UserInputTest {
 

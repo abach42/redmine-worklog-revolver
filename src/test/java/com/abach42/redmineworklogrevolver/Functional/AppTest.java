@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.*;
 
@@ -19,6 +18,11 @@ import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import com.abach42.redmineworklogrevolver.App;
 import com.abach42.redmineworklogrevolver.ProcedureChain.ChooseTimeRangeHandler;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.Test;
+
+@ExtendWith(MockitoExtension.class)
 public class AppTest {
     
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();

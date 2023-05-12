@@ -14,8 +14,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.junit.jupiter.api.DisplayName;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.Test;
 
+@ExtendWith(MockitoExtension.class)
 public class RedmineApiTest {
 
     HttpGet httpGet = new HttpGet();
