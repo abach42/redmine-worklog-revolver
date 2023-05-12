@@ -43,11 +43,6 @@ public class UserOutput {
         System.out.println();
     }
 
-    public void drawProgessBar(int progress, int max) {
-        int percentComplete = (int) ((double) progress / max * 100);
-        print("\r[" + "#".repeat(percentComplete) + " ".repeat(100 - percentComplete) + "] " + percentComplete + "%");
-    }
-
     public void wait(int waitMillisec) {
         try {
             Thread.sleep(waitMillisec);

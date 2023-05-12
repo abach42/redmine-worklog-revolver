@@ -1,9 +1,14 @@
 package com.abach42.redmineworklogrevolver.ProcedureChain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import com.abach42.redmineworklogrevolver.ApiAdapter.ApiRequest;
 import com.abach42.redmineworklogrevolver.ApiAdapter.JsonFormatter;
 import com.abach42.redmineworklogrevolver.ApiAdapter.RedmineAdaptee;
@@ -11,7 +16,7 @@ import com.abach42.redmineworklogrevolver.ApiAdapter.RevolverIdRedmineAdapter;
 import com.abach42.redmineworklogrevolver.ApiAdapter.RevolverIdTargetInterface;
 import com.abach42.redmineworklogrevolver.Context.ContextInterface;
 import com.abach42.redmineworklogrevolver.Context.WorklogList;
-import com.abach42.redmineworklogrevolver.Display.UserOutput;
+import com.abach42.redmineworklogrevolver.Display.ProgressBar;
 import com.abach42.redmineworklogrevolver.Entity.Worklog;
 import com.abach42.redmineworklogrevolver.Exception.ApplicationException;
 
@@ -37,28 +42,35 @@ public class RevolverIdHandler extends AbstractProcedureHandler{
         context = context.resetApiDemand();
         WorklogList list = context.getWorklogList();
 
-        fetchRevolverIdsConcurrent(list);
+        WorklogList listWithIds = fetchRevolverIdsConcurrent(list);
+        context.setWorklogList(listWithIds);
  
         handleNext();
     }
 
-    protected void fetchRevolverIdsConcurrent(WorklogList list) {
+    protected WorklogList fetchRevolverIdsConcurrent(WorklogList list) {
         ExecutorService executor = getExecutor();
         CompletionService<Worklog> service = getService(executor);
 
+        List<Future<Worklog>> futures = submitRevolverIdJobs(list, service);
+
+        WorklogList listWithIds = waitAndCollectResult(futures);
+        stopExecutor(executor);
+
+        return listWithIds;
+    }
+
+    private List<Future<Worklog>> submitRevolverIdJobs(WorklogList list, CompletionService<Worklog> service) {
         RevolverIdTargetInterface target = setupAdapter();
 
+        List<Future<Worklog>> futures = new ArrayList<>();
+        
         for (Worklog worklog : list) {
-            service.submit(() -> {
+            futures.add(service.submit(() -> {
                 return addRevolverIdToWorlog(worklog, target);
-            });
+            }));
         }
-
-        for (int i = 0; i < list.size(); i++) {
-            waitAndCollectResult(list, service, i);
-        }
-
-        stopExecutor(executor);
+        return futures;
     }
 
     protected RevolverIdTargetInterface setupAdapter() {
@@ -83,13 +95,22 @@ public class RevolverIdHandler extends AbstractProcedureHandler{
         return worklog;
     }
     
-    protected void waitAndCollectResult(WorklogList list, CompletionService<Worklog> service, int i) {
-        try {
-            service.take();
-        } catch (InterruptedException e) {
-            throw new ApplicationException(e.getCause().getMessage());
+    protected WorklogList waitAndCollectResult(List<Future<Worklog>> futures) {
+        WorklogList listWithIds = new WorklogList();
+        
+        ProgressBar progressBar = new ProgressBar(futures.size());
+        
+        for (Future<Worklog> future : futures) {
+            try {
+                listWithIds.add(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                throw new ApplicationException(e.getMessage());
+            }
+            progressBar.incrementProgressIterator();
+            progressBar.drawProgessBar();
         }
-        new UserOutput().drawProgessBar(i+1, list.size());
+
+        return listWithIds;
     }
 
     protected void stopExecutor(ExecutorService executor) {
