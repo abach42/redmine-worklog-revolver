@@ -103,15 +103,18 @@ public class RevolverIdRedmineAdapter extends AbstractRedmineAdapter implements 
         for (int x = 0; x < customFields.get().length(); x++) {
             JSONObject customElement = customFields.get().getJSONObject(x);
             
-            if(
-                customElement.getString(RedmineAdaptee.SUBKEY_NAME).equals(RedmineAdaptee.SUBKEY_REVOLVER_ID)
-            ) {
-                Optional<String> extractedValue = Optional.of(customElement.getString(RedmineAdaptee.SUBKEY_VALUE).trim());
-                
-                return extractedValue.filter(str -> !str.isBlank());
+            if(customElement.getString(RedmineAdaptee.SUBKEY_NAME).equals(RedmineAdaptee.SUBKEY_REVOLVER_ID)) {
+                try {
+                    String value = customElement.getString(RedmineAdaptee.SUBKEY_VALUE).trim();
+                    Optional<String> extractedValue = Optional.of(value);
+                    return extractedValue.filter(str -> !str.isBlank());
+                } catch (JSONException e) {
+                    return Optional.empty();
+                }
             }
         }
-        
+
+        // No matching custom field found
         return Optional.empty();
     }
     
