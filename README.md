@@ -67,6 +67,8 @@ it will be shown as not `provided for #12345`. Ask your boss for a Revolver ID o
 
 ## Starting
 
+Please make sure, to run java version, at least 17. You can check this by typing `java -version` on your console. 
+
 You could start by compiling your jar file, or use latest compilation in root folder by using version number
 
 `java -jar redmine_worklog_revolver{version}.jar`
