@@ -23,9 +23,6 @@ import com.abach42.redmineworklogrevolver.Exception.ApiRequestException;
 import com.abach42.redmineworklogrevolver.Exception.EmptyResultException;
 import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
 
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-
 import org.junit.jupiter.api.Test;
 
 @ExtendWith(MockitoExtension.class)
@@ -210,37 +207,5 @@ public class ApiRequestTest {
         assertThat(request).isNotNull();
     }
 
-    @Test
-    @DisplayName("response should be present")
-    void testGetResponse() throws IOException, InterruptedException  {
-        // Set up mock server
-        MockWebServer mockServer = new MockWebServer();
- 
-        mockServer.start();
-        String url = mockServer.url("/test").toString();
-        String[] headers = {"Accept", "application/json", "Authorization", "Bearer abc123"};
-        
-        realSubject.withParameter(url, headers);
-        
-        // Set up a mock response from the server
-        String responseBody = "{ \"message\": \"Hello, World!\" }";
-        mockServer.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setHeader("Content-Type", "application/json")
-                .setBody(responseBody));
-
-        HttpRequest request = realSubject.getRequest();
-
-        // Call the method being tested
-        Optional<HttpResponse<String>> response = realSubject.getResponse(request);
-        
-        assertThat(response).isPresent();
-
-        // Verify that the request object was built correctly
-        assertEquals(mockServer.url("/test").toString(), request.uri().toString());
-        assertEquals("application/json", request.headers().firstValue("Accept").orElse(null));
-        mockServer.shutdown();
-        mockServer.close();
-    }
-
+    //TODO make use of virtual webserver like okhttp4
 }

@@ -3,9 +3,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.abach42</groupId>
+  <groupId>com.abach42.redmineworklogrevolver</groupId>
   <artifactId>redmine-worklog-revolver</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>5.0.0</version>
   <name>redmine-worklog-revolver-lib</name>
   
   <properties>
@@ -15,7 +15,6 @@
     <maven.compiler.target>20</maven.compiler.target>
   </properties>
 
-  
   <build>
     <plugins>
       <plugin>
@@ -58,28 +57,28 @@
     <dependency>
         <groupId>org.junit.platform</groupId>
         <artifactId>junit-platform-engine</artifactId>
-        <version>1.9.2</version>
+        <version>1.9.3</version>
         <scope>test</scope>
     </dependency>
   	<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <version>5.9.2</version>
+        <version>5.9.3</version>
         <scope>test</scope>
     </dependency>
   	<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
-        <version>5.9.2</version>
+        <version>5.9.3</version>
         <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params -->
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-params</artifactId>
-        <version>5.9.2</version>
+        <version>5.9.3</version>
         <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
@@ -89,40 +88,30 @@
         <version>3.24.2</version>
         <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
     <dependency>
-      <groupId>com.github.stefanbirkner</groupId>
-      <artifactId>system-rules</artifactId>
-      <version>1.19.0</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- https://github.com/square/okhttp/tree/master/mockwebserver -->
-    <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>mockwebserver</artifactId>
-        <version>4.9.1</version>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-junit-jupiter</artifactId>
+        <version>5.4.0</version>
         <scope>test</scope>
     </dependency>
-    <!-- Mockito dependencies -->
+    <!-- https://mvnrepository.com/artifact/org.json/json -->
     <dependency>
-	    <groupId>org.mockito</groupId>
-	    <artifactId>mockito-junit-jupiter</artifactId>
-	    <version>3.6.28</version>
-	    <scope>test</scope>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20230227</version>
     </dependency>
-    <dependency>
-	    <groupId>org.json</groupId>
-	    <artifactId>json</artifactId>
-	    <version>20230227</version>
-    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2 -->
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-configuration2</artifactId>
-        <version>2.8.0</version>
+        <version>2.9.0</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
     <dependency>
-      <groupId>commons-beanutils</groupId>
-      <artifactId>commons-beanutils</artifactId>
-      <version>1.9.4</version>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>1.9.4</version>
     </dependency>
   </dependencies>
 </project>

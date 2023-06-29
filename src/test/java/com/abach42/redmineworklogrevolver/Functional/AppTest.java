@@ -9,12 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 
-import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.*;
-
-import org.junit.Rule;
-import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
-
-
 import com.abach42.redmineworklogrevolver.App;
 import com.abach42.redmineworklogrevolver.ProcedureChain.ChooseTimeRangeHandler;
 
@@ -27,10 +21,7 @@ public class AppTest {
     
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
-
-    @Rule
-    public final TextFromStandardInputStream systemInMock = emptyStandardInputStream();
-
+    
     @BeforeEach
     public void setStreams() {
         System.setOut(new PrintStream(out));

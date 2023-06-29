@@ -1,7 +1,7 @@
 package com.abach42.redmineworklogrevolver.ApiAdapter;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,12 +31,12 @@ public class RedmineAdapteeTest {
     RedmineAdaptee subject;
 
 
-    @Before
+    @BeforeEach
     public void openMocks() {
         closeable = MockitoAnnotations.openMocks(this);
     }
 
-    @After 
+    @AfterEach
     public void releaseMocks() throws Exception {
         closeable.close();
     }

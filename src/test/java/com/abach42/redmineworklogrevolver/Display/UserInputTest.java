@@ -9,8 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import org.junit.Rule;
-import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 
@@ -20,8 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-
-import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.*;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -37,9 +33,6 @@ public class UserInputTest {
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
-
-    @Rule
-    public final TextFromStandardInputStream systemInMock = emptyStandardInputStream();
     
     @BeforeEach
     public void setStreams() {
