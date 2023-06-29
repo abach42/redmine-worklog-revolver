@@ -32,7 +32,10 @@ public class ResultHandler extends AbstractProcedureHandler {
             handleNext();
         }
 
-        printGroupedTableSimple(groupWorklogs(context.getWorklogList()));
+        printGroupedTableSimple(
+            groupWorklogs(context.getWorklogList()),
+            collectIds(context.getWorklogList())
+        );
 
         handleNext();
     }
@@ -48,7 +51,21 @@ public class ResultHandler extends AbstractProcedureHandler {
         return sortedMap;
     }
 
-    private void printGroupedTableSimple(Map<LocalDate, Map<String, Double>> groupedWorklogs) {
+    protected Map<LocalDate, Map<String, String>> collectIds(WorklogList listOfWorklogs) {
+        Map<LocalDate, Map<String, String>> groupedWorklogsIds = listOfWorklogs.stream()
+        .collect(Collectors.groupingBy(Worklog::getDate,
+                Collectors.groupingBy(Worklog::getRevolverIdentifier,
+                        Collectors.mapping(worklog -> String.valueOf(worklog.getId()), Collectors.joining(", "))
+                )
+        ));
+
+        return groupedWorklogsIds;
+    }
+
+    private void printGroupedTableSimple(
+        Map<LocalDate, Map<String, Double>> groupedWorklogs, 
+        Map<LocalDate, Map<String, String>> groupedWorklogsIds
+    ) {
         UserOutput output = new UserOutput();
 
         output.addLineFeeds(2);
@@ -72,7 +89,11 @@ public class ResultHandler extends AbstractProcedureHandler {
                 String revolverIdentifier = innerEntry.getKey().substring(0, Math.min(innerEntry.getKey().length(), 35));
                 Double hours = innerEntry.getValue();
                 totalHours += hours;
+
+                String issueIdList = "Issues: " + groupedWorklogsIds.get(date).get(innerEntry.getKey());
+;
                 output.write(String.format("| %-35s | %-5.2f |", revolverIdentifier, hours));
+                output.write(String.format("| %-35s | %-5.2s |", issueIdList , ""));
             }
 
             output.write(printTableLine());
