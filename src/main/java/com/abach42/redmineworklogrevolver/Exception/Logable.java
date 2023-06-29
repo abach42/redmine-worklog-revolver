@@ -10,10 +10,8 @@ public interface Logable {
 
     public default Logger getLogger(Exception exception) {
         try (InputStream configStream = exception.getClass().getResourceAsStream(LOGGING_CONF_PATH)){
-            
             LogManager.getLogManager().readConfiguration(configStream);
         } catch (Exception e) {
-           
             e.printStackTrace();
         }
 

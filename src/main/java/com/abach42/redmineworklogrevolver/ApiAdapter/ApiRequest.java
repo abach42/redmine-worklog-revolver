@@ -8,6 +8,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
+import com.abach42.redmineworklogrevolver.Display.Logable;
 import com.abach42.redmineworklogrevolver.Exception.ApiRequestException;
 import com.abach42.redmineworklogrevolver.Exception.EmptyResultException;
 import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
@@ -19,7 +20,7 @@ import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
  * You better try-catch this to be able to handle exceptions.
  * Working in train wreck to make call short hand. 
  */
-public class ApiRequest implements ApiRequestable {
+public class ApiRequest implements ApiRequestable, Logable {
 
     protected String url;
     protected String[] headers;
@@ -45,13 +46,12 @@ public class ApiRequest implements ApiRequestable {
             response = getResponse(request);
 
             setBody(response);
-            
             evaluateStatusCode(readStatusCode(response));
         } catch (ConnectException e) {
-
-            throw new ApiRequestException(CONNECTION_ERROR_MSG + e.getMessage());
+            String errorMessage = CONNECTION_ERROR_MSG + e.getMessage();
+            logServere(this, errorMessage);
+            throw new ApiRequestException(errorMessage);
         } catch (IOException | InterruptedException e) {
-
             throw new ApiRequestException(API_ERROR_MSG + e.getCause().getMessage());
         }
     }

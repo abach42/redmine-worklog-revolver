@@ -8,6 +8,6 @@ public class ApiRequestException extends RuntimeException
     
     public ApiRequestException(String message) {
         super(message);
-        logServere(this);
+        //logServere(this);
     }
 }

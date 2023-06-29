@@ -16,9 +16,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.abach42.redmineworklogrevolver.Display.Logable;
 import com.abach42.redmineworklogrevolver.Exception.ApiRequestException;
 import com.abach42.redmineworklogrevolver.Exception.EmptyResultException;
 import com.abach42.redmineworklogrevolver.Exception.WrongAccessKeyException;
@@ -45,6 +47,7 @@ public class ApiRequestTest {
     @BeforeEach
     public void setUp() {
        realSubject = new ApiRequest();
+       verify(subject, never()).logServere(any(), anyString());
     }
 
     @Test
@@ -61,20 +64,28 @@ public class ApiRequestTest {
     }
 
     @Test
-    @DisplayName("Should throw various exceptions")
-    void testEvaluateStatusCode() {
-        final int statusCodeForbidden = 401;
-        Exception exception = assertThrows(WrongAccessKeyException.class, () ->
-            realSubject.evaluateStatusCode(statusCodeForbidden));
-        
-        assertEquals(ApiRequest.WRONG_ACCESS_KEY_MSG + statusCodeForbidden, exception.getMessage());
+    @DisplayName("Should throw WrongAccessKeyException when status code is 401")
+    void testEvaluateStatusCodeThrowsWrongAccessKeyException() {
+        final int statusCode = 401;
+        Exception exception = assertThrows(WrongAccessKeyException.class,
+            () -> realSubject.evaluateStatusCode(statusCode));
 
-        final int statusCodeAny = 999;
-        exception = assertThrows(ApiRequestException.class, () ->
-            realSubject.evaluateStatusCode(statusCodeAny));
-        
-        assertEquals(ApiRequest.STATUS_CODE_ERROR_MSG + statusCodeAny, exception.getMessage());
+        assertEquals(ApiRequest.WRONG_ACCESS_KEY_MSG + statusCode, exception.getMessage());
+    }
 
+    @Test
+    @DisplayName("Should throw ApiRequestException when status code is any value other than 200 or 401")
+    void testEvaluateStatusCodeThrowsApiRequestException() {
+        final int statusCode = 999;
+        Exception exception = assertThrows(ApiRequestException.class,
+            () -> realSubject.evaluateStatusCode(statusCode));
+
+        assertEquals(ApiRequest.STATUS_CODE_ERROR_MSG + statusCode, exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should not throw any exception when status code is 200")
+    void testEvaluateStatusCodeDoesNotThrowException() {
         assertDoesNotThrow(() -> realSubject.evaluateStatusCode(200));
     }
 
@@ -176,7 +187,7 @@ public class ApiRequestTest {
 
         doThrow(new IOException("foo", new Exception("foo")))
             .doThrow(new InterruptedException("foo"))
-               // .doThrow(new ConnectException("foo"))
+            
         .when(subject).getResponse(any(HttpRequest.class));
 
         Exception exception = assertThrows(ApiRequestException.class, () -> 
