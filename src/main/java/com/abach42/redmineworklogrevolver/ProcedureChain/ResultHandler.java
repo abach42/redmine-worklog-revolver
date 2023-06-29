@@ -68,18 +68,11 @@ public class ResultHandler extends AbstractProcedureHandler {
 
             output.write(printTableLine());
 
-            for (Map.Entry<String, Map<Double, String>> revolverEntry : revolverIdentifierMap.entrySet()) {
-                String revolverIdentifier = revolverEntry.getKey();
-                System.out.println("Revolver Identifier: " + revolverIdentifier);
-
-                Map<Double, String> hoursMap = revolverEntry.getValue();
-                for (Map.Entry<Double, String> hoursEntry : hoursMap.entrySet()) {
-                    Double hours = hoursEntry.getKey();
-                    String ids = hoursEntry.getValue();
-
-                    System.out.println("Hours: " + hours);
-                    System.out.println("IDs: " + ids);
-                }
+            for (Map.Entry<String, Double> innerEntry : worklogsForDate.entrySet()) {
+                String revolverIdentifier = innerEntry.getKey().substring(0, Math.min(innerEntry.getKey().length(), 35));
+                Double hours = innerEntry.getValue();
+                totalHours += hours;
+                output.write(String.format("| %-35s | %-5.2f |", revolverIdentifier, hours));
             }
 
             output.write(printTableLine());
