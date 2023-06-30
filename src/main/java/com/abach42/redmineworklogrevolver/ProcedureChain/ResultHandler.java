@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.abach42.redmineworklogrevolver.Context.ContextInterface;
 import com.abach42.redmineworklogrevolver.Context.WorklogList;
@@ -77,28 +78,19 @@ public class ResultHandler extends AbstractProcedureHandler {
 
             output.addLineFeeds(2);
 
-            output.write(printTableLine());
-
-            String dateString = date.format(DateTimeFormatter.ofPattern(context.getAppConfig().getDatePattern()));
-            output.write(String.format("| %s: %-29s | %-5s |", LABEL_DATE, dateString, ""));
-            output.write(String.format("| %-35s | %-5s |", LABEL_REVOLVER_ID, LABEL_HOURS));
-
-            output.write(printTableLine());
+            printHeader(output, date);
 
             for (Map.Entry<String, Double> innerEntry : worklogsForDate.entrySet()) {
                 String revolverIdentifier = innerEntry.getKey().substring(0, Math.min(innerEntry.getKey().length(), 35));
                 Double hours = innerEntry.getValue();
                 totalHours += hours;
-
-                String issueIdList = "Issues: " + groupedWorklogsIds.get(date).get(innerEntry.getKey());
-;
-                output.write(String.format("| %-35s | %-5.2f |", revolverIdentifier, hours));
-                output.write(String.format("| %-35s | %-5.2s |", issueIdList , ""));
+                printRevolverIdAndDuration(output, revolverIdentifier, hours);
+                
+                String issueIdList = " Issues: " + groupedWorklogsIds.get(date).get(innerEntry.getKey());
+                printIssuesList(output, issueIdList); 
             }
 
-            output.write(printTableLine());
-            output.write(String.format("| %-35s | %-5.2f |", LABEL_TOTAL_HOUERS, totalHours));
-            output.write(printTableLine());
+            printFooter(output, totalHours);
 
             output.wait(20);
         }
@@ -108,7 +100,38 @@ public class ResultHandler extends AbstractProcedureHandler {
         output.wait(1000);
     }
 
+    private void printHeader(UserOutput output, LocalDate date) {
+        output.write(printTableLine());
+
+        String dateString = date.format(DateTimeFormatter.ofPattern(context.getAppConfig().getDatePattern()));
+        output.write(String.format("| %s: %-30s | %-5s |", LABEL_DATE, dateString, ""));
+        output.write(String.format("| %-36s | %-5s |", LABEL_REVOLVER_ID, LABEL_HOURS));
+
+        output.write(printTableLine());
+    }
+
+    private void printRevolverIdAndDuration(UserOutput output, String revolverIdentifier, Double hours) {
+        output.write(String.format("| %-36s | %-5.2f |", revolverIdentifier, hours));
+    }
+
+    private void printIssuesList(UserOutput output, String issueIdList) {
+        int maxLength = 36; // Maximum length of each line before line break
+        String[] formattedIssuesArray = IntStream.range(0, (issueIdList.length() + maxLength - 1) / maxLength)
+            .mapToObj(i -> issueIdList.substring(i * maxLength, Math.min((i + 1) * maxLength, issueIdList.length())))
+            .toArray(String[]::new);
+
+        for(String issues : formattedIssuesArray) {
+            output.write(String.format("| %-36s | %-5.2s |", issues, ""));
+        }
+    }
+
+    private void printFooter(UserOutput output, Double totalHours) {
+        output.write(printTableLine());
+        output.write(String.format("| %-36s | %-5.2f |", LABEL_TOTAL_HOUERS, totalHours));
+        output.write(printTableLine());
+    }
+
     private String printTableLine() {
-        return String.format("+ %-35s + %-5s +", "-----------------------------------", "-----");
+        return String.format("+ %-36s + %-5s +", "------------------------------------", "-----");
     }
 }
