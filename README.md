@@ -1,19 +1,19 @@
-# Redmine work log for Revolver Ids
+# Redmine work log for Proad Ids
 
 ## Reason
 
-Sum up your redmine work log on a custom string field named "Revolver number".
+Sum up your redmine work log on a custom string field named "Proad number".
 To not to spend time using excel for each day, this tool comes into play. 
 
 ## What does it do?
 
 Asking once for API secret key of your redmine account, it reads your redmine work logs sorts it into daily chunks, searches for the custom field of 
-"Revolver number", sums it up on this and pours out a list like this: 
+"Proad number", sums it up on this and pours out a list like this: 
 
 ```
 + ----------------------------------- + ----- +
 | Date: 1970-04-01                    |       |
-| Revolver Identifier                 | Hours |
+| Proad Identifier                    | Hours |
 + ----------------------------------- + ----- +
 | foo-bar-F                           | 4.50  |
 | foo-baz-F                           | 0.25  |
@@ -47,7 +47,7 @@ Enter a command:
 
 + ----------------------------------- + ----- +
 | Date: 1970-04-01                    |       |
-| Revolver Identifier                 | Hours |
+| Proad Identifier                    | Hours |
 + ----------------------------------- + ----- +
 | foo-bar-F                           | 4.50  |
 | foo-baz-F                           | 0.25  |
@@ -60,10 +60,10 @@ Enter a command:
 
 ````
 
-Redmine Revolver ID will by `foo-bar-F`.
+Redmine Proad ID will by `foo-bar-F`.
 
-If a ticket does not have a Redmine Revolver ID,
-it will be shown as not `provided for #12345`. Ask your boss for a Revolver ID on this ticket or one of it's parents.
+If a ticket does not have a Redmine Proad ID,
+it will be shown as not `provided for #12345`. Ask your boss for a Proad ID on this ticket or one of it's parents.
 
 ## Starting
 

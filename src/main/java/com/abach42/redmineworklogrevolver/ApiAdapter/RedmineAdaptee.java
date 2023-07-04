@@ -30,7 +30,8 @@ public class RedmineAdaptee {
     public static final String SUBKEY_HOURS = "hours";
     public static final String SUBKEY_PARENT = "parent";
     public static final String SUBKEY_NAME = "name";
-    public static final String SUBKEY_REVOLVER_ID = "Revolver-ID";
+    //public static final String SUBKEY_REVOLVER_ID = "Revolver-ID";
+    public static final String SUBKEY_REVOLVER_ID = "Projektnummer";
     public static final String SUBKEY_VALUE = "value";
     public static final String SUBKEY_CUSTOM_FIELDS = "custom_fields";
 

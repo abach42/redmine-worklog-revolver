@@ -24,9 +24,9 @@ public class Worklog {
     private LocalDate date;
     private double hours;
 
-    public static final String EMPTY_REVOLVER_ID_TEXT = "Id not provided for #";
+    public static final String EMPTY_ID_TEXT = "Id not provided for #";
 
-    private String revolverIdentifier = EMPTY_REVOLVER_ID_TEXT;
+    private String revolverIdentifier = EMPTY_ID_TEXT;
 
     public Worklog(int id, LocalDate date, double hours) {
         this.id = id;
