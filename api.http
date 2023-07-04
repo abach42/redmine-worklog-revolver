@@ -1,0 +1,8 @@
+###
+
+GET https://frs.plan.io/issues/43224.json HTTP/1.1
+Content-Type: application/json
+X-Redmine-API-Key: {redimeApyKey}
+
+
+###
