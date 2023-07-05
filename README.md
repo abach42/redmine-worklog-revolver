@@ -1,4 +1,4 @@
-# Redmine work log for Proad Ids
+# Redmine work log for Proad Ids (former Revolver Ids < 6.0.0)
 
 ## Reason
 
@@ -12,13 +12,18 @@ Asking once for API secret key of your redmine account, it reads your redmine wo
 
 ```
 + ----------------------------------- + ----- +
-| Date: 1970-04-01                    |       |
+| Date: 01.01.1970                    |       |
 | Proad Identifier                    | Hours |
 + ----------------------------------- + ----- +
 | foo-bar-F                           | 4.50  |
+|  Issues: 12346, 23456, 34567, 45678,|       |
+|  56789, 78912                       |       |
 | foo-baz-F                           | 0.25  |
+|  Issues: 11111                      |       |
 | not provided for #12345             | 0.50  |
+|  Issues: 12345                      |       |
 | foo-boo-F                           | 0.25  |
+|  Issues: 22222                      |       |
 | foo-bom-F                           | 2.50  |
 + ----------------------------------- + ----- +
 | Total hours                         | 8.00  |
@@ -46,13 +51,18 @@ Enter a command:
 [##############################################################] 100%
 
 + ----------------------------------- + ----- +
-| Date: 1970-04-01                    |       |
-| Proad Identifier                    | Hours |
+| Date: 01.01.1970                    |       |
+| Proad Identifier                    | Hours |
 + ----------------------------------- + ----- +
 | foo-bar-F                           | 4.50  |
+|  Issues: 12346, 23456, 34567, 45678,|       |
+|  56789, 78912                       |       |
 | foo-baz-F                           | 0.25  |
+|  Issues: 11111                      |       |
 | not provided for #12345             | 0.50  |
+|  Issues: 12345                      |       |
 | foo-boo-F                           | 0.25  |
+|  Issues: 22222                      |       |
 | foo-bom-F                           | 2.50  |
 + ----------------------------------- + ----- +
 | Total hours                         | 8.00  |
